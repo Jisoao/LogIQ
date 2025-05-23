@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LogIQ</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../Styles/style.css">
+</head>
+<body>  
+
+
+  <h1>etong file nato is pina-convert kolang sa ai, na which is ung nagawa kona sa kotlin</h1>
+  
+    <!-- Home Screen -->
+    <div id="home-page" class="page active">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+          <div class="container-fluid">
+              <a class="navbar-brand" href="#">LogIQ</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                  <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav ms-auto">
+                      <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                              <i class="fas fa-user"></i> <span id="username">User</span>
+                          </a>
+                          <ul class="dropdown-menu dropdown-menu-end">
+                              <li><a class="dropdown-item" href="#" id="profile-link">Profile</a></li>
+                              <li><a class="dropdown-item" href="#" id="settings-link">Settings</a></li>
+                              <li><a class="dropdown-item" href="#" id="help-link">Help</a></li>
+                              <li><hr class="dropdown-divider"></li>
+                              <li><a class="dropdown-item" href="#" id="logout-link">Logout</a></li>
+                          </ul>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </nav>
+
+      <div class="container mt-4">
+          <div class="row">
+              <div class="col-md-3">
+                  <div class="list-group">
+                      <a href="#" class="list-group-item list-group-item-action active" data-section="home">
+                          <i class="fas fa-home"></i> Home
+                      </a>
+                      <a href="#" class="list-group-item list-group-item-action" data-section="learn">
+                          <i class="fas fa-book"></i> Learn
+                      </a>
+                      <a href="#" class="list-group-item list-group-item-action" data-section="practice">
+                          <i class="fas fa-pencil-alt"></i> Practice
+                      </a>
+                      <a href="#" class="list-group-item list-group-item-action" data-section="game">
+                          <i class="fas fa-gamepad"></i> Game
+                      </a>
+                  </div>
+              </div>
+              <div class="col-md-9">
+                  <div id="content-area">
+                      <!-- Content will be loaded dynamically -->
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+
+  
+  <!-- Bootstrap JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Firebase SDK -->
+  <script type="module" src="../Scripts/auth.js"></script>
+  <!-- Custom JS -->
+  <script>
+    // Make the home page visible by default
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('home-page').classList.add('active');
+    });
+  </script>
+</body>
+</html>
