@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-analytics.js";
 
 // Firebase configuration
@@ -43,16 +43,27 @@ function showRegister() {
   document.getElementById('switchLogin')?.classList.remove('active');
 }
 
+function showPasswordReset() {
+  document.getElementById('loginForm').style.display = 'none';
+  document.getElementById('registerForm').style.display = 'none';
+  document.getElementById('resetForm').style.display = 'block';
+  clearMessages();
+}
+
 function clearMessages() {
   document.getElementById('registerError').textContent = '';
   document.getElementById('registerSuccess').textContent = '';
   document.getElementById('loginError').textContent = '';
   document.getElementById('loginSuccess').textContent = '';
+  document.getElementById('resetError').textContent = '';
+  document.getElementById('resetSuccess').textContent = '';
 }
 
 // Make functions globally available
 window.showLogin = showLogin;
 window.showRegister = showRegister;
+window.showPasswordReset = showPasswordReset;
+window.handlePasswordReset = handlePasswordReset;
 
 // Registration form handler
 document.getElementById('registerForm').addEventListener('submit', function(event) {
@@ -107,6 +118,27 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
       errorEl.textContent = error.message;
     });
 });
+
+// Password Reset handler
+function handlePasswordReset(event) {
+  event.preventDefault();
+  clearMessages();
+
+  const email = document.getElementById('resetEmail').value.trim();
+  const errorEl = document.getElementById('resetError');
+  const successEl = document.getElementById('resetSuccess');
+
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
+      successEl.textContent = "Password reset email sent! Please check your inbox.";
+      setTimeout(() => {
+        showLogin();
+      }, 3000);
+    })
+    .catch((error) => {
+      errorEl.textContent = error.message;
+    });
+}
 
 // Auth state observer
 onAuthStateChanged(auth, (user) => {

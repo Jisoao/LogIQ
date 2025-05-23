@@ -46,9 +46,22 @@
         <label for="loginPassword"></label>
         <input type="password" id="loginPassword" required autocomplete="current-password" placeholder="PASSWORD">
       </div>
-      <span class="forgot-link" onclick="alert('Password reset is not implemented in this demo.')">Forgot Password</span>
+      <span class="forgot-link" onclick="window.showPasswordReset()">Forgot Password?</span>
       <button type="submit" class="login-btn" id="loginBtn">LOG IN</button>
       <span class="toggle-link" onclick="window.showRegister()">No account? Click to Sign Up</span>
+    </form>
+
+    <!-- Password Reset Form -->
+    <form id="resetForm" style="display:none;" onsubmit="window.handlePasswordReset(event)">
+      <div class="auth-title">RESET PASSWORD</div>
+      <div class="error" id="resetError"></div>
+      <div class="success" id="resetSuccess"></div>
+      <div class="input-group">
+        <label for="resetEmail"></label>
+        <input type="email" id="resetEmail" required autocomplete="username" placeholder="ENTER YOUR EMAIL">
+      </div>
+      <button type="submit" class="auth-btn">SEND RESET LINK</button>
+      <span class="toggle-link" onclick="window.showLogin()">Remember your password? Click to Login</span>
     </form>
   </div>
 </body>
