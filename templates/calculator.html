@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogIQ - Matrix Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/calculator.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">LogIQ</div>
+        <div class="user-info">Matrix Calculator</div>
+    </nav>
+
+    <main class="container">
+        <section class="calculator-header">
+            <h1>Matrix Calculator</h1>
+            <p>Solve systems of linear equations step-by-step using various methods</p>
+        </section>
+
+        <section class="calculator-container">
+            <div class="method-selector">
+                <h2>Select Method</h2>
+                <div class="method-options">
+                    <div class="method-option active" data-method="cramers-rule">
+                        <i class="fas fa-table-cells"></i>
+                        <span>Cramer's Rule</span>
+                    </div>
+                    <div class="method-option" data-method="gauss-elimination">
+                        <i class="fas fa-grip-lines"></i>
+                        <span>Gauss Elimination</span>
+                    </div>
+                    <div class="method-option" data-method="gauss-jordan">
+                        <i class="fas fa-equals"></i>
+                        <span>Gauss-Jordan</span>
+                    </div>
+                    <div class="method-option" data-method="lu-decomposition">
+                        <i class="fas fa-layer-group"></i>
+                        <span>LU Decomposition</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="matrix-size-selector">
+                <h2>Matrix Size</h2>
+                <div class="size-options">
+                    <label class="size-option active">
+                        <input type="radio" name="matrix-size" value="2" checked>
+                        <span>2 × 2</span>
+                    </label>
+                    <label class="size-option">
+                        <input type="radio" name="matrix-size" value="3">
+                        <span>3 × 3</span>
+                    </label>
+                    <label class="size-option">
+                        <input type="radio" name="matrix-size" value="4">
+                        <span>4 × 4</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="matrix-input-container">
+                <h2>Enter Matrix Values</h2>
+                <div class="matrix-input">
+                    <div class="coefficient-matrix">
+                        <div class="matrix-label">Coefficient Matrix (A)</div>
+                        <div class="matrix-grid" id="coefficient-grid"></div>
+                    </div>
+                    <div class="equals-sign">=</div>
+                    <div class="constant-matrix">
+                        <div class="matrix-label">Constants (B)</div>
+                        <div class="matrix-grid" id="constant-grid"></div>
+                    </div>
+                </div>
+                <div class="matrix-actions">
+                    <button class="btn btn-accent" id="random-values">Random Values</button>
+                    <button class="btn" id="clear-values">Clear</button>
+                    <button class="btn btn-primary" id="calculate-btn">Calculate</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="result-container" style="display: none;">
+            <h2>Solution</h2>
+            <div class="solution-card">
+                <div class="method-name">Solution using <span id="solution-method">Cramer's Rule</span></div>
+                <div class="solution-steps">
+                    <div class="step">
+                        <div class="step-title">Step 1: Matrix Determinant</div>
+                        <div class="step-content">
+                            <div class="math-display" id="determinant-calculation">
+                                <!-- MathJax will render here -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-title">Step 2: Variable Calculations</div>
+                        <div class="step-content">
+                            <div class="math-display" id="variable-calculations">
+                                <!-- MathJax will render here -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-title">Step 3: Final Solution</div>
+                        <div class="step-content">
+                            <div class="solution-result" id="final-solution">
+                                <!-- Final solution will be shown here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn" id="back-to-calculator">Solve Another</button>
+            </div>
+        </section>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="/" class="nav-item">
+            <i class="icon fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/calculator" class="nav-item active">
+            <i class="icon fas fa-calculator"></i>
+            <span>Practice</span>
+        </a>
+        <a href="/learn/cramers-rule" class="nav-item">
+            <i class="icon fas fa-book-open"></i>
+            <span>Learn</span>
+        </a>
+        <a href="/profile" class="nav-item">
+            <i class="icon fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <script src="{{ url_for('static', filename='js/calculator.js') }}"></script>
+</body>
+</html> 

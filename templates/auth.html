@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LogIQ | Auth</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+  <script type="module" src="{{ url_for('static', filename='js/auth.js') }}" defer></script>
+</head>
+<body>
+  <button class="auth-logo" onclick="window.location.href='/'">LogIQ</button>
+  <div class="auth-card">
+    <button class="back-arrow" onclick="window.location.href='/'" title="Back">&#8592;</button>
+    <!-- Registration Form -->
+    <form id="registerForm">
+      <div class="auth-title">CREATE NEW ACCOUNT</div>
+      <div class="error" id="registerError"></div>
+      <div class="success" id="registerSuccess"></div>
+      <div class="input-group">
+        <label for="regEmail"></label>
+        <input type="email" id="regEmail" required autocomplete="username" placeholder="EMAIL">
+      </div>
+      <div class="input-group">
+        <label for="regPassword"></label>
+        <input type="password" id="regPassword" required autocomplete="new-password" placeholder="PASSWORD">
+      </div>
+      <div class="input-group">
+        <label for="regConfirm"></label>
+        <input type="password" id="regConfirm" required autocomplete="new-password" placeholder="CONFIRM PASSWORD">
+      </div>
+      <button type="submit" class="auth-btn" id="submitBtn">SIGNUP</button>
+      <span class="toggle-link" onclick="window.showLogin()">Already have an account? Click to Login</span>
+    </form>
+
+    <!-- Login Form -->
+    <form id="loginForm" style="display:none;">
+      <div class="auth-title">WELCOME BACK!</div>
+      <div class="error" id="loginError"></div>
+      <div class="success" id="loginSuccess"></div>
+      <div class="input-group">
+        <label for="loginEmail"></label>
+        <input type="email" id="loginEmail" required autocomplete="username" placeholder="EMAIL">
+      </div>
+      <div class="input-group">
+        <label for="loginPassword"></label>
+        <input type="password" id="loginPassword" required autocomplete="current-password" placeholder="PASSWORD">
+      </div>
+      <span class="forgot-link" onclick="alert('Password reset is not implemented in this demo.')">Forgot Password</span>
+      <button type="submit" class="login-btn" id="loginBtn">LOG IN</button>
+      <span class="toggle-link" onclick="window.showRegister()">No account? Click to Sign Up</span>
+    </form>
+  </div>
+</body>
+</html> 

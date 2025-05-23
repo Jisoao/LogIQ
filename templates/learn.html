@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogIQ - Learn</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/learn.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="back-button">←</a>
+        <div class="logo">LogIQ</div>
+        <div class="progress-indicator">1/3</div>
+    </nav>
+
+    <main class="container">
+        <h1 class="topic-title">{{ topic.replace('-', ' ').title() }}</h1>
+        
+        <section class="video-section">
+            <div class="video-container">
+                <div class="video-placeholder">
+                    <button class="play-button">▶</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="lesson-content">
+            <div class="course-objective">
+                <h2>Course Objective</h2>
+                <p>To help students understand and apply {{ topic.replace('-', ' ').title() }} to solve systems of linear equations using determinants.</p>
+            </div>
+
+            <div class="lessons-list">
+                <div class="lesson-item active">
+                    <span class="lesson-number">1</span>
+                    <div class="lesson-info">
+                        <h3>Review of Determinants</h3>
+                        <p>Understanding the basics of determinants and their properties</p>
+                    </div>
+                </div>
+
+                <div class="lesson-item">
+                    <span class="lesson-number">2</span>
+                    <div class="lesson-info">
+                        <h3>Applying {{ topic.replace('-', ' ').title() }}</h3>
+                        <p>Step-by-step guide to solving equations</p>
+                    </div>
+                </div>
+
+                <div class="lesson-item">
+                    <span class="lesson-number">3</span>
+                    <div class="lesson-info">
+                        <h3>When Not to Use</h3>
+                        <p>Understanding limitations and alternative methods</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="navigation-buttons">
+            <button class="nav-button prev" disabled>Previous</button>
+            <button class="nav-button next">Next</button>
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="/" class="nav-item">
+            <i class="icon">🏠</i>
+            <span>Home</span>
+        </a>
+        <a href="/calculator" class="nav-item">
+            <i class="icon">🧮</i>
+            <span>Practice</span>
+        </a>
+        <a href="/learn/cramers-rule" class="nav-item active">
+            <i class="icon">📚</i>
+            <span>Learn</span>
+        </a>
+        <a href="/profile" class="nav-item">
+            <i class="icon">👤</i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <script src="{{ url_for('static', filename='js/learn.js') }}"></script>
+</body>
+</html> 

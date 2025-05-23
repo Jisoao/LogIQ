@@ -1,0 +1,276 @@
+.calculator-header {
+    text-align: center;
+    margin-bottom: var(--spacing-8);
+}
+
+.calculator-header h1 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-2);
+}
+
+.calculator-header p {
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.calculator-container {
+    background-color: var(--card-background);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--card-shadow);
+    padding: var(--spacing-6);
+    margin-bottom: var(--spacing-8);
+}
+
+.method-selector, .matrix-size-selector, .matrix-input-container {
+    margin-bottom: var(--spacing-6);
+}
+
+.method-selector h2, .matrix-size-selector h2, .matrix-input-container h2 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-4);
+    color: var(--text-primary);
+}
+
+.method-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-3);
+}
+
+.method-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: var(--spacing-4);
+    border-radius: var(--border-radius-md);
+    border: 2px solid var(--text-light);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.method-option i {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-2);
+    color: var(--text-secondary);
+    transition: color 0.2s ease;
+}
+
+.method-option span {
+    color: var(--text-secondary);
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.method-option:hover {
+    border-color: var(--primary-light);
+    background-color: rgba(37, 99, 235, 0.05);
+}
+
+.method-option.active {
+    border-color: var(--primary-color);
+    background-color: rgba(37, 99, 235, 0.1);
+}
+
+.method-option.active i,
+.method-option.active span {
+    color: var(--primary-color);
+}
+
+.size-options {
+    display: flex;
+    gap: var(--spacing-3);
+}
+
+.size-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-2) var(--spacing-4);
+    border-radius: var(--border-radius-md);
+    border: 2px solid var(--text-light);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.size-option input {
+    display: none;
+}
+
+.size-option:hover {
+    border-color: var(--primary-light);
+    background-color: rgba(37, 99, 235, 0.05);
+}
+
+.size-option.active {
+    border-color: var(--primary-color);
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.matrix-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-4);
+    margin-bottom: var(--spacing-6);
+    flex-wrap: wrap;
+}
+
+.coefficient-matrix, .constant-matrix {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.matrix-label {
+    margin-bottom: var(--spacing-3);
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.equals-sign {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--text-secondary);
+    margin: 0 var(--spacing-2);
+}
+
+.matrix-grid {
+    display: grid;
+    gap: var(--spacing-2);
+    position: relative;
+    padding: var(--spacing-4) var(--spacing-6);
+}
+
+.matrix-grid::before, .matrix-grid::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: var(--text-primary);
+}
+
+.matrix-grid::before {
+    left: 0;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.matrix-grid::after {
+    right: 0;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.matrix-input-field {
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid var(--text-light);
+    border-radius: var(--border-radius-sm);
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.matrix-input-field:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.matrix-actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-3);
+}
+
+/* Solution styles */
+.result-container {
+    margin-top: var(--spacing-8);
+}
+
+.result-container h2 {
+    text-align: center;
+    margin-bottom: var(--spacing-4);
+    color: var(--primary-color);
+}
+
+.solution-card {
+    background-color: var(--card-background);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--card-shadow);
+    padding: var(--spacing-6);
+}
+
+.method-name {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-6);
+    padding-bottom: var(--spacing-4);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.solution-steps {
+    margin-bottom: var(--spacing-6);
+}
+
+.step {
+    margin-bottom: var(--spacing-4);
+    padding: var(--spacing-4);
+    border-radius: var(--border-radius-md);
+    background-color: rgba(248, 250, 252, 0.8);
+    border-left: 4px solid var(--accent-color);
+}
+
+.step-title {
+    font-weight: 600;
+    margin-bottom: var(--spacing-2);
+    color: var(--primary-dark);
+}
+
+.math-display {
+    padding: var(--spacing-3);
+    overflow-x: auto;
+}
+
+.solution-result {
+    font-size: 1.2rem;
+    text-align: center;
+    padding: var(--spacing-4);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+#back-to-calculator {
+    display: block;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .method-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .size-options {
+        justify-content: center;
+    }
+    
+    .matrix-input {
+        flex-direction: column;
+    }
+    
+    .equals-sign {
+        margin: var(--spacing-2) 0;
+    }
+    
+    .calculator-header h1 {
+        font-size: 1.75rem;
+    }
+} 

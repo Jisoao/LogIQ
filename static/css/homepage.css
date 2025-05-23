@@ -1,0 +1,319 @@
+:root {
+    /* Remove duplicate color definitions and use variables from style.css */
+    --border-radius-md: 0.5rem;
+    --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --card-hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.navbar {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.container {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.matrix-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-6);
+    margin-bottom: 6rem;
+}
+
+.welcome-banner {
+    background: linear-gradient(120deg, var(--primary-light), var(--primary-dark));
+    color: var(--text-white);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-6);
+    margin-bottom: var(--spacing-8);
+    box-shadow: var(--card-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 200%;
+    background: linear-gradient(rgba(255,255,255,0.1), transparent);
+    transform: rotate(30deg);
+    pointer-events: none;
+}
+
+.welcome-banner h1 {
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-2);
+    font-weight: 700;
+}
+
+.welcome-banner p {
+    opacity: 0.9;
+    max-width: 80%;
+}
+
+.method-card {
+    background-color: var(--card-background);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-6);
+    text-align: center;
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: calc(var(--i, 0) * 0.1s);
+    opacity: 0;
+}
+
+.method-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--card-hover-shadow);
+}
+
+.method-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary-light), var(--accent-light));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.method-card:hover::before {
+    transform: scaleX(1);
+}
+
+.method-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-4);
+    color: var(--primary-color);
+    position: relative;
+    width: 80px;
+    height: 80px;
+    background-color: rgba(59, 130, 246, 0.1);
+    border-radius: var(--border-radius-full);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.method-card:hover .method-icon {
+    background-color: rgba(59, 130, 246, 0.2);
+    transform: scale(1.1);
+}
+
+.method-card h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-4);
+    color: var(--text-primary);
+}
+
+.progress-wrapper {
+    position: relative;
+    margin-top: auto;
+    width: 100%;
+}
+
+.progress-ring {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: var(--spacing-4) auto 0;
+}
+
+.progress-ring svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.progress-bg {
+    fill: none;
+    stroke: rgba(16, 185, 129, 0.2);
+    stroke-width: 4;
+}
+
+.progress-ring path.progress-indicator {
+    fill: none;
+    stroke: var(--accent-color);
+    stroke-width: 4;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s ease;
+    filter: drop-shadow(0 0 3px rgba(16, 185, 129, 0.5));
+}
+
+.percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--accent-dark);
+}
+
+.status-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: var(--spacing-2);
+}
+
+.method-card[data-progress="0"] .status-label {
+    color: var(--text-light);
+}
+
+.method-card[data-progress="100"] .status-label {
+    color: var(--accent-dark);
+    font-weight: 500;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--card-background);
+    display: flex;
+    justify-content: space-around;
+    padding: 0.8rem;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 0.8rem;
+}
+
+.nav-item.active {
+    color: var(--primary-color);
+}
+
+.icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+}
+
+/* User authentication elements */
+.user-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+}
+
+.auth-buttons {
+    display: flex;
+    gap: var(--spacing-2);
+}
+
+.auth-button, .logout-button {
+    padding: var(--spacing-2) var(--spacing-4);
+    border-radius: var(--border-radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.auth-button {
+    background-color: var(--text-white);
+    color: var(--primary-color);
+    text-decoration: none;
+    border: 1px solid var(--text-white);
+}
+
+.auth-button:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.logout-button {
+    background-color: transparent;
+    color: var(--text-white);
+    border: 1px solid var(--text-white);
+}
+
+.logout-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+    .matrix-methods {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-4);
+    }
+    
+    .welcome-banner {
+        padding: var(--spacing-4);
+        margin-bottom: var(--spacing-6);
+    }
+    
+    .welcome-banner h1 {
+        font-size: 1.5rem;
+    }
+    
+    .method-icon {
+        font-size: 2.5rem;
+        width: 70px;
+        height: 70px;
+    }
+    
+    .method-card h3 {
+        font-size: 1.2rem;
+    }
+    
+    .percentage {
+        font-size: 1rem;
+    }
+
+    .user-controls {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: var(--spacing-1);
+    }
+}
+
+@media (max-width: 480px) {
+    .matrix-methods {
+        grid-template-columns: 1fr;
+    }
+    
+    .welcome-banner p {
+        max-width: 100%;
+    }
+} 

@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-analytics.js";
 
 // Firebase configuration
@@ -44,10 +44,10 @@ function showRegister() {
 }
 
 function clearMessages() {
-  document.getElementById('registerError').textContent = '';
-  document.getElementById('registerSuccess').textContent = '';
-  document.getElementById('loginError').textContent = '';
-  document.getElementById('loginSuccess').textContent = '';
+  document.getElementById('registerError')?.textContent = '';
+  document.getElementById('registerSuccess')?.textContent = '';
+  document.getElementById('loginError')?.textContent = '';
+  document.getElementById('loginSuccess')?.textContent = '';
 }
 
 // Make functions globally available
@@ -55,7 +55,7 @@ window.showLogin = showLogin;
 window.showRegister = showRegister;
 
 // Registration form handler
-document.getElementById('registerForm').addEventListener('submit', function(event) {
+document.getElementById('registerForm')?.addEventListener('submit', function(event) {
   event.preventDefault();
   clearMessages();
 
@@ -86,7 +86,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
 });
 
 // Login form handler
-document.getElementById('loginForm').addEventListener('submit', function(event) {
+document.getElementById('loginForm')?.addEventListener('submit', function(event) {
   event.preventDefault();
   clearMessages();
 
@@ -97,10 +97,15 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
 
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
+      // Store user info in sessionStorage
+      const username = email.split('@')[0];
+      sessionStorage.setItem('userLoggedIn', 'true');
+      sessionStorage.setItem('username', username);
+      
       successEl.textContent = "Login successful! Redirecting...";
       // Use a more reliable redirection method
       setTimeout(() => {
-        window.location.replace('homepage.html');
+        window.location.replace('/');
       }, 1000);
     })
     .catch((error) => {
@@ -108,16 +113,77 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     });
 });
 
+// Logout handler
+function handleLogout() {
+  signOut(auth)
+    .then(() => {
+      // Clear session storage
+      sessionStorage.removeItem('userLoggedIn');
+      sessionStorage.removeItem('username');
+      console.log('User signed out');
+      
+      // Redirect to login page
+      window.location.replace('/auth');
+    })
+    .catch((error) => {
+      console.error('Sign out error:', error);
+    });
+}
+
+// Attach logout handler to logout buttons
+document.querySelectorAll('.logout-button').forEach(button => {
+  button.addEventListener('click', handleLogout);
+});
+
 // Auth state observer
 onAuthStateChanged(auth, (user) => {
   if (user) {
     console.log('User is signed in:', user.email);
+    // Store user info in sessionStorage
+    const username = user.email.split('@')[0];
+    sessionStorage.setItem('userLoggedIn', 'true');
+    sessionStorage.setItem('username', username);
+    
     // If we're on the auth page and user is signed in, redirect to homepage
-    if (window.location.pathname.includes('auth.html')) {
-      window.location.replace('homepage.html');
+    if (window.location.pathname.includes('auth')) {
+      window.location.replace('/');
     }
+    
+    // Update username on pages with navbar
+    const usernameElement = document.getElementById('username');
+    if (usernameElement) {
+      usernameElement.textContent = username;
+    }
+    
+    // Update login/logout buttons
+    document.querySelectorAll('#login-button').forEach(el => {
+      el.style.display = 'none';
+    });
+    document.querySelectorAll('#logout-button').forEach(el => {
+      el.style.display = 'block';
+    });
   } else {
     console.log('No user is signed in');
+    // Clear session storage
+    sessionStorage.removeItem('userLoggedIn');
+    sessionStorage.removeItem('username');
+    
+    // Update UI for logged out state
+    document.querySelectorAll('#username').forEach(el => {
+      if (el) el.textContent = 'Guest';
+    });
+    document.querySelectorAll('#login-button').forEach(el => {
+      if (el) el.style.display = 'block';
+    });
+    document.querySelectorAll('#logout-button').forEach(el => {
+      if (el) el.style.display = 'none';
+    });
+    
+    // Redirect to auth page if not logged in and not already on auth page
+    if (!window.location.pathname.includes('auth') && !window.location.pathname.includes('login')) {
+      // Uncomment this line when auth is fully implemented:
+      // window.location.replace('/auth');
+    }
   }
 });
 
