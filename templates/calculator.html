@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Calculator - LogIQ</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/calculator.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</head>
+<body>
+    <div class="main-content">
+        <!-- Top Header Bar -->
+        <nav class="navbar">
+            <a href="/" class="logo">LogIQ</a>
+            <div class="nav-actions">
+                <a href="/profile" class="profile-link">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="username">Guest</span>
+                </a>
+                <a href="/auth" class="login-btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </nav>
+
+        <main class="container">
+            <header class="page-header">
+                <h1>Matrix Calculator</h1>
+                <p>Solve matrix problems and validate your solutions</p>
+            </header>
+            
+            <div class="calculator-wrapper">
+                <div class="calculator-controls">
+                    <h2>Matrix Dimensions</h2>
+                    <div class="dimension-controls">
+                        <div class="dimension-group">
+                            <label for="rows">Rows</label>
+                            <div class="dimension-input">
+                                <button class="dim-btn" id="decreaseRows">-</button>
+                                <input type="number" id="rows" value="3" min="2" max="6">
+                                <button class="dim-btn" id="increaseRows">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="dimension-group">
+                            <label for="cols">Columns</label>
+                            <div class="dimension-input">
+                                <button class="dim-btn" id="decreaseCols">-</button>
+                                <input type="number" id="cols" value="3" min="2" max="6">
+                                <button class="dim-btn" id="increaseCols">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="calculator-actions">
+                        <button class="action-btn" id="clearMatrix">
+                            <i class="fas fa-eraser"></i> Clear
+                        </button>
+                        <button class="action-btn" id="randomMatrix">
+                            <i class="fas fa-random"></i> Random
+                        </button>
+                        <button class="action-btn" id="identityMatrix">
+                            <i class="fas fa-id-badge"></i> Identity
+                        </button>
+                    </div>
+                    
+                    <h2>Operations</h2>
+                    <div class="operations-grid">
+                        <button class="operation-btn" data-operation="determinant">
+                            <i class="fas fa-calculator"></i>
+                            <span>Determinant</span>
+                        </button>
+                        <button class="operation-btn" data-operation="inverse">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Inverse</span>
+                        </button>
+                        <button class="operation-btn" data-operation="transpose">
+                            <i class="fas fa-retweet"></i>
+                            <span>Transpose</span>
+                        </button>
+                        <button class="operation-btn" data-operation="eigenvalues">
+                            <i class="fas fa-project-diagram"></i>
+                            <span>Eigenvalues</span>
+                        </button>
+                        <button class="operation-btn" data-operation="rank">
+                            <i class="fas fa-sort-numeric-up"></i>
+                            <span>Rank</span>
+                        </button>
+                        <button class="operation-btn" data-operation="trace">
+                            <i class="fas fa-route"></i>
+                            <span>Trace</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="calculator-display">
+                    <h2>Matrix</h2>
+                    <div class="matrix-container">
+                        <div class="matrix-wrapper" id="matrixWrapper">
+                            <table class="matrix-grid" id="matrixGrid"></table>
+                        </div>
+                    </div>
+                    
+                    <div class="result-display" id="resultDisplay">
+                        <h2>Result</h2>
+                        <div class="result-content" id="resultContent">
+                            <!-- Result will be displayed here -->
+                            <div class="placeholder-text">Select an operation to see the result</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation Bar -->
+        <div class="bottom-nav">
+            <a href="/" class="bottom-nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/learn/cramers-rule" class="bottom-nav-item">
+                <i class="fas fa-book-open"></i>
+                <span>Learn</span>
+            </a>
+            <a href="/calculator" class="bottom-nav-item active">
+                <i class="fas fa-calculator"></i>
+                <span>Calculator</span>
+            </a>
+            <a href="/game" class="bottom-nav-item">
+                <i class="fas fa-gamepad"></i>
+                <span>Game</span>
+            </a>
+            <a href="/profile" class="bottom-nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/calculator.js') }}"></script>
+</body>
+</html> 

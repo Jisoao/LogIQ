@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogIQ - About Us</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</head>
+<body>
+    <div class="main-content">
+        <!-- Top Header Bar -->
+        <nav class="navbar">
+            <a href="/" class="logo">LogIQ</a>
+            <div class="nav-actions">
+                <a href="/profile" class="profile-link">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="username">Guest</span>
+                </a>
+                <a href="/auth" class="login-btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </nav>
+
+        <main class="container">
+            <header class="page-header">
+                <h1>About LogIQ</h1>
+                <p>The matrix learning platform designed to simplify complex mathematical concepts</p>
+            </header>
+
+            <section class="about-content">
+                <div class="about-card">
+                    <h2>Our Mission</h2>
+                    <p>LogIQ was created with a simple mission: to make matrix operations and linear algebra concepts more accessible and engaging for students at all levels. We believe that interactive learning and visualization are the keys to mastering these foundational mathematical concepts.</p>
+                </div>
+                
+                <div class="about-card">
+                    <h2>Features</h2>
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <i class="fas fa-book-open"></i>
+                            <h3>Interactive Learning</h3>
+                            <p>Step-by-step tutorials with visual explanations</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-calculator"></i>
+                            <h3>Practice Exercises</h3>
+                            <p>Practice problems with guided solutions</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-table-cells"></i>
+                            <h3>Matrix Calculator</h3>
+                            <p>Powerful tools for matrix operations</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-gamepad"></i>
+                            <h3>Matrix Games</h3>
+                            <p>Fun challenges to test your knowledge</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-card">
+                    <h2>Our Team</h2>
+                    <p>LogIQ is developed by a team of mathematics educators and software developers passionate about creating innovative educational tools. We continuously work to improve our platform based on user feedback and educational research.</p>
+                </div>
+                
+                <div class="about-card">
+                    <h2>Contact Us</h2>
+                    <p>Have questions, feedback, or suggestions? We'd love to hear from you!</p>
+                    <a href="mailto:info@logiq.edu" class="contact-link">
+                        <i class="fas fa-envelope"></i> info@logiq.edu
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation Bar -->
+        <div class="bottom-nav">
+            <a href="/" class="bottom-nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/learn/cramers-rule" class="bottom-nav-item">
+                <i class="fas fa-book-open"></i>
+                <span>Learn</span>
+            </a>
+            <a href="/calculator" class="bottom-nav-item">
+                <i class="fas fa-calculator"></i>
+                <span>Calculator</span>
+            </a>
+            <a href="/game" class="bottom-nav-item">
+                <i class="fas fa-gamepad"></i>
+                <span>Game</span>
+            </a>
+            <a href="/profile" class="bottom-nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html> 

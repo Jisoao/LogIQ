@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogIQ - Matrix Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/calculator.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</head>
+<body>
+    <div class="main-content">
+        <!-- Top Header Bar -->
+        <nav class="navbar">
+            <a href="/" class="logo">LogIQ</a>
+            <div class="nav-actions">
+                <a href="/profile" class="profile-link">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="username">Guest</span>
+                </a>
+                <a href="/auth" class="login-btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </nav>
+
+        <main class="container">
+            <div class="page-header">
+                    <h1>Matrix Calculator</h1>
+                    <p>Perform matrix operations and calculations with this powerful calculator</p>
+            </div>
+
+            <div class="calculator-container">
+                <div class="method-selector">
+                    <h2>Select Operation</h2>
+                    <div class="method-options">
+                        <div class="method-option active" data-method="determinant">
+                            <i class="fas fa-table-cells"></i>
+                            <span>Determinant</span>
+                        </div>
+                        <div class="method-option" data-method="inverse">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Matrix Inverse</span>
+                        </div>
+                        <div class="method-option" data-method="multiplication">
+                            <i class="fas fa-times"></i>
+                            <span>Matrix Multiplication</span>
+                        </div>
+                        <div class="method-option" data-method="addition">
+                            <i class="fas fa-plus"></i>
+                            <span>Matrix Addition</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="matrix-size-selector">
+                    <h2>Matrix Size</h2>
+                    <div class="size-options">
+                        <label class="size-option active">
+                            <input type="radio" name="matrix-size" value="2" checked>
+                            <span>2 × 2</span>
+                        </label>
+                        <label class="size-option">
+                            <input type="radio" name="matrix-size" value="3">
+                            <span>3 × 3</span>
+                        </label>
+                        <label class="size-option">
+                            <input type="radio" name="matrix-size" value="4">
+                            <span>4 × 4</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="matrix-input-container">
+                    <h2>Enter Matrix Values</h2>
+                    <div class="matrix-input">
+                        <div class="coefficient-matrix">
+                            <div class="matrix-label">Matrix A</div>
+                            <div class="matrix-grid" id="coefficient-grid"></div>
+                        </div>
+                        <div class="operation-sign">=</div>
+                        <div class="result-matrix">
+                            <div class="matrix-label">Result</div>
+                            <div class="matrix-grid" id="result-grid"></div>
+                        </div>
+                    </div>
+                    <div class="matrix-actions">
+                        <button class="btn btn-accent" id="random-values">Random Values</button>
+                        <button class="btn" id="clear-values">Clear</button>
+                        <button class="btn" id="calculate-btn">Calculate</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-container" style="display: none;">
+                <h2 class="section-title">Result</h2>
+                <div class="solution-card">
+                    <div class="method-name">Result using <span id="solution-method">Determinant</span></div>
+                    <div class="solution-steps">
+                        <div class="step">
+                            <div class="step-title">Step 1: Matrix Setup</div>
+                            <div class="step-content">
+                                <div class="math-display" id="matrix-setup">
+                                    <!-- MathJax will render here -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-title">Step 2: Calculation</div>
+                            <div class="step-content">
+                                <div class="math-display" id="matrix-calculation">
+                                    <!-- MathJax will render here -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-title">Step 3: Final Result</div>
+                            <div class="step-content">
+                                <div class="solution-result" id="final-solution">
+                                    <!-- Final solution will be shown here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn" id="back-to-calculator">Calculate Another</button>
+                </div>
+            </div>
+            
+            <div class="bottom-nav">
+                <a href="/" class="bottom-nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="/learn/cramers-rule" class="bottom-nav-item">
+                    <i class="fas fa-book-open"></i>
+                    <span>Learn</span>
+                </a>
+                <a href="/matrix-calculator" class="bottom-nav-item active">
+                    <i class="fas fa-calculator"></i>
+                    <span>Matrix Calculator</span>
+                </a>
+                <a href="/game" class="bottom-nav-item">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Game</span>
+                </a>
+                <a href="/profile" class="bottom-nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </div>
+        </main>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/matrix_calculator.js') }}"></script>
+</body>
+</html> 

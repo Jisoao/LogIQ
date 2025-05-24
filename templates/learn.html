@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn - LogIQ</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/learn.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</head>
+<body>
+    <div class="main-content">
+        <!-- Top Header Bar -->
+        <nav class="navbar">
+            <a href="/" class="logo">LogIQ</a>
+            <div class="nav-actions">
+                <a href="/profile" class="profile-link">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="username">Guest</span>
+                </a>
+                <a href="/auth" class="login-btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </nav>
+
+        <main class="container">
+            <header class="page-header">
+                    <h1>Learn {{ topic.replace('-', ' ').title() }}</h1>
+                    <p>Master the concept through interactive lessons</p>
+            </header>
+            
+            <div class="lesson-container">
+                <div class="lesson-navigation">
+                    <div class="current-module">
+                        <h2>{{ topic.replace('-', ' ').title() }}</h2>
+                        <div class="progress-indicator">
+                            <div class="progress-bar" style="width: 30%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="module-navigation">
+                        <a href="#" class="module-nav-btn active">
+                            <span class="module-nav-number">1</span>
+                            <span class="module-nav-title">Introduction</span>
+                        </a>
+                        <a href="#" class="module-nav-btn">
+                            <span class="module-nav-number">2</span>
+                            <span class="module-nav-title">Key Concepts</span>
+                        </a>
+                        <a href="#" class="module-nav-btn">
+                            <span class="module-nav-number">3</span>
+                            <span class="module-nav-title">Step-by-Step</span>
+                        </a>
+                        <a href="#" class="module-nav-btn">
+                            <span class="module-nav-number">4</span>
+                            <span class="module-nav-title">Examples</span>
+                        </a>
+                        <a href="#" class="module-nav-btn">
+                            <span class="module-nav-number">5</span>
+                            <span class="module-nav-title">Practice</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="lesson-content">
+                    <div class="lesson-section" id="introduction">
+                        <h2>Introduction to {{ topic.replace('-', ' ').title() }}</h2>
+                        <p class="lesson-text">
+                            {{ topic.replace('-', ' ').title() }} is a powerful method for solving systems of linear equations. It provides a systematic approach to finding solutions by manipulating matrices.
+                        </p>
+                        <div class="math-display">
+                            $$\text{Let's explore how } {{ topic.replace('-', ' ').title() }} \text{ works for solving linear systems.}$$
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-navigation-buttons">
+                        <button class="btn btn-disabled">Previous</button>
+                        <button class="btn">Next: Key Concepts</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation Bar -->
+        <div class="bottom-nav">
+            <a href="/" class="bottom-nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/learn/cramers-rule" class="bottom-nav-item active">
+                <i class="fas fa-book-open"></i>
+                <span>Learn</span>
+            </a>
+            <a href="/matrix-calculator" class="bottom-nav-item">
+                <i class="fas fa-calculator"></i>
+                <span>Matrix Calculator</span>
+            </a>
+            <a href="/game" class="bottom-nav-item">
+                <i class="fas fa-gamepad"></i>
+                <span>Game</span>
+            </a>
+            <a href="/profile" class="bottom-nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/learn.js') }}"></script>
+</body>
+</html> 

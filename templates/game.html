@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogIQ - Matrix Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</head>
+<body>
+    <div class="main-content">
+        <!-- Top Header Bar -->
+        <nav class="navbar">
+            <a href="/" class="logo">LogIQ</a>
+            <div class="nav-actions">
+                <a href="/profile" class="profile-link">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="username">Guest</span>
+                </a>
+                <a href="/auth" class="login-btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </nav>
+
+        <main class="container">
+            <header class="page-header">
+                <h1>Matrix Challenge</h1>
+                <p>Test your matrix operations knowledge with fun challenges!</p>
+            </header>
+
+            <div class="game-container">
+                <div class="game-sidebar">
+                    <div class="game-stats">
+                        <div class="stat-box">
+                            <span class="stat-label">Score</span>
+                            <span class="stat-value" id="score">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Level</span>
+                            <span class="stat-value" id="level">1</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Time</span>
+                            <span class="stat-value" id="time">60</span>
+                        </div>
+                    </div>
+                    <div class="game-controls">
+                        <button class="game-btn start-btn" id="startBtn">
+                            <i class="fas fa-play"></i> Start Game
+                        </button>
+                        <button class="game-btn help-btn" id="helpBtn">
+                            <i class="fas fa-question-circle"></i> How to Play
+                        </button>
+                    </div>
+                    <div class="game-levels">
+                        <h3>Challenge Levels</h3>
+                        <div class="level-selector">
+                            <button class="level-btn active" data-level="1">1</button>
+                            <button class="level-btn" data-level="2">2</button>
+                            <button class="level-btn locked" data-level="3">3</button>
+                            <button class="level-btn locked" data-level="4">4</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-board">
+                    <div class="game-message" id="gameMessage">
+                        <h2>Welcome to Matrix Challenge</h2>
+                        <p>Test your knowledge of matrix operations in this fun game!</p>
+                        <p>Click "Start Game" to begin.</p>
+                    </div>
+
+                    <div class="game-play" id="gamePlay" style="display:none;">
+                        <div class="question-container">
+                            <div class="question-header">
+                                <span class="question-number">Question 1/5</span>
+                                <span class="question-timer"><i class="fas fa-clock"></i> <span id="questionTimer">15</span></span>
+                            </div>
+                            <div class="question-text" id="questionText">
+                                Calculate the determinant of the following matrix:
+                            </div>
+                            <div class="matrix-display">
+                                <table>
+                                    <tr>
+                                        <td>3</td><td>1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td><td>4</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="answer-options">
+                                <button class="answer-btn" data-answer="2">2</button>
+                                <button class="answer-btn" data-answer="10">10</button>
+                                <button class="answer-btn" data-answer="8">8</button>
+                                <button class="answer-btn" data-answer="12">12</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="game-results" id="gameResults" style="display:none;">
+                        <h2>Game Results</h2>
+                        <div class="results-content">
+                            <div class="result-item">
+                                <span class="result-label">Final Score:</span>
+                                <span class="result-value" id="finalScore">0</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Correct Answers:</span>
+                                <span class="result-value" id="correctAnswers">0/5</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Time Taken:</span>
+                                <span class="result-value" id="timeTaken">0s</span>
+                            </div>
+                        </div>
+                        <div class="result-buttons">
+                            <button class="game-btn" id="playAgainBtn"><i class="fas fa-redo"></i> Play Again</button>
+                            <button class="game-btn" id="nextLevelBtn"><i class="fas fa-arrow-right"></i> Next Level</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation Bar -->
+        <div class="bottom-nav">
+            <a href="/" class="bottom-nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/learn/cramers-rule" class="bottom-nav-item">
+                <i class="fas fa-book-open"></i>
+                <span>Learn</span>
+            </a>
+            <a href="/matrix-calculator" class="bottom-nav-item">
+                <i class="fas fa-calculator"></i>
+                <span>Matrix Calculator</span>
+            </a>
+            <a href="/game" class="bottom-nav-item active">
+                <i class="fas fa-gamepad"></i>
+                <span>Game</span>
+            </a>
+            <a href="/profile" class="bottom-nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Help Modal -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>How to Play</h2>
+            <p>Matrix Challenge tests your knowledge of matrix operations:</p>
+            <ul>
+                <li>Answer questions about matrix operations</li>
+                <li>Each correct answer earns points</li>
+                <li>Complete levels to unlock more challenging questions</li>
+                <li>Beat the timer for bonus points</li>
+                <li>Unlock achievements as you progress</li>
+            </ul>
+            <p>Good luck!</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</body>
+</html> 

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogIQ - Matrix Learning Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</head>
+<body>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Header Bar -->
+        <nav class="navbar">
+            <a href="/" class="logo">LogIQ</a>
+            <div class="nav-actions">
+                <a href="/profile" class="profile-link">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="username">Guest</span>
+                </a>
+                <a href="/auth" class="login-btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </nav>
+        
+        <main class="container">
+            <!-- Page Header -->
+            <header class="page-header">
+                    <h1>Master Matrix Operations</h1>
+                    <p>Learn step-by-step matrix calculation methods with interactive tutorials and practice exercises.</p>
+            </header>
+
+            <h2 class="section-title">Learning Modules</h2>
+            <div class="method-grid">
+                <div class="method-card" data-progress="25">
+                    <div class="method-icon">
+                        <i class="fas fa-table-cells"></i>
+                    </div>
+                    <h3>Cramer's Rule</h3>
+                    <p>Solve systems using determinants</p>
+                    <a href="/learn/cramers-rule" class="start-learning-btn">Start Learning</a>
+                </div>
+
+                <div class="method-card" data-progress="0">
+                    <div class="method-icon">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <h3>Gauss Elimination</h3>
+                    <p>Row reduction to upper triangular form</p>
+                    <a href="/learn/gauss-elimination" class="start-learning-btn">Start Learning</a>
+                </div>
+
+                <div class="method-card" data-progress="0">
+                    <div class="method-icon">
+                        <i class="fas fa-equals"></i>
+                    </div>
+                    <h3>Gauss-Jordan</h3>
+                    <p>Complete row reduction to identity</p>
+                    <a href="/learn/gauss-jordan" class="start-learning-btn">Start Learning</a>
+                </div>
+
+                <div class="method-card" data-progress="0">
+                    <div class="method-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3>LU Decomposition</h3>
+                    <p>Factor matrix into lower & upper</p>
+                    <a href="/learn/lu-decomposition" class="start-learning-btn">Start Learning</a>
+                </div>
+            </div>
+
+            <h2 class="section-title">Your Progress</h2>
+            <div class="progress-section">
+                <div class="progress-card-grid">
+                    <div class="progress-card">
+                        <div class="progress-ring">
+                            <svg viewBox="0 0 36 36">
+                                <circle class="progress-bg" cx="18" cy="18" r="15.9155"></circle>
+                                <circle class="progress-indicator" cx="18" cy="18" r="15.9155" stroke-dasharray="100" stroke-dashoffset="75" style="stroke-dashoffset: 75"></circle>
+                            </svg>
+                            <div class="percentage">25%</div>
+                        </div>
+                        <h3>Cramer's Rule</h3>
+                    </div>
+                    
+                    <div class="progress-card">
+                        <div class="progress-ring">
+                            <svg viewBox="0 0 36 36">
+                                <circle class="progress-bg" cx="18" cy="18" r="15.9155"></circle>
+                                <circle class="progress-indicator" cx="18" cy="18" r="15.9155" stroke-dasharray="100" stroke-dashoffset="100" style="stroke-dashoffset: 100"></circle>
+                            </svg>
+                            <div class="percentage">0%</div>
+                        </div>
+                        <h3>Gauss Elimination</h3>
+                    </div>
+                    
+                    <div class="progress-card">
+                        <div class="progress-ring">
+                            <svg viewBox="0 0 36 36">
+                                <circle class="progress-bg" cx="18" cy="18" r="15.9155"></circle>
+                                <circle class="progress-indicator" cx="18" cy="18" r="15.9155" stroke-dasharray="100" stroke-dashoffset="100" style="stroke-dashoffset: 100"></circle>
+                            </svg>
+                            <div class="percentage">0%</div>
+                        </div>
+                        <h3>Gauss-Jordan</h3>
+                    </div>
+                    
+                    <div class="progress-card">
+                        <div class="progress-ring">
+                            <svg viewBox="0 0 36 36">
+                                <circle class="progress-bg" cx="18" cy="18" r="15.9155"></circle>
+                                <circle class="progress-indicator" cx="18" cy="18" r="15.9155" stroke-dasharray="100" stroke-dashoffset="100" style="stroke-dashoffset: 100"></circle>
+                            </svg>
+                            <div class="percentage">0%</div>
+                        </div>
+                        <h3>LU Decomposition</h3>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Bottom Navigation Bar -->
+        <div class="bottom-nav">
+            <a href="/" class="bottom-nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/learn/cramers-rule" class="bottom-nav-item">
+                <i class="fas fa-book-open"></i>
+                <span>Learn</span>
+            </a>
+            <a href="/matrix-calculator" class="bottom-nav-item">
+                <i class="fas fa-calculator"></i>
+                <span>Matrix Calculator</span>
+            </a>
+            <a href="/game" class="bottom-nav-item">
+                <i class="fas fa-gamepad"></i>
+                <span>Game</span>
+            </a>
+            <a href="/profile" class="bottom-nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
+</body>
+</html> 
