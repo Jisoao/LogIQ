@@ -32,6 +32,68 @@
             </div>
         </nav>
 
+        
+        <!-- Navigation Bar -->
+        <div class="bottom-nav">
+            <a href="/" class="bottom-nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/learn" class="bottom-nav-item active">
+                <i class="fas fa-book-open"></i>
+                <span>Learn</span>
+            </a>
+            <a href="/calculator" class="bottom-nav-item">
+                <i class="fas fa-calculator"></i>
+                <span>Calculate</span>
+            </a>
+            <a href="/game" class="bottom-nav-item">
+                <i class="fas fa-gamepad"></i>
+                <span>Practice</span>
+            </a>
+        </div>
+
+        <main class="container">
+            <div id="lesson-selection">
+                <header class="page-header">
+                    <h1>Choose a Lesson</h1>
+                    <p>Select a topic to start learning</p>
+                </header>
+                <div class="lesson-buttons">
+                    <a href="#" class="lesson-button" data-lesson="cramers-rule">
+                        <i class="fas fa-square-root-alt"></i>
+                        <h3>Cramer's Rule</h3>
+                        <p>Learn how to solve systems using determinants</p>
+                    </a>
+                    <a href="#" class="lesson-button" data-lesson="gauss-elimination">
+                        <i class="fas fa-arrows-alt-v"></i>
+                        <h3>Gauss Elimination</h3>
+                        <p>Master the method of elimination</p>
+                    </a>
+                    <a href="#" class="lesson-button" data-lesson="gauss-jordan">
+                        <i class="fas fa-equals"></i>
+                        <h3>Gauss Jordan</h3>
+                        <p>Learn reduced row echelon form</p>
+                    </a>
+                    <a href="#" class="lesson-button" data-lesson="lu-decomposition">
+                        <i class="fas fa-layer-group"></i>
+                        <h3>LU Decomposition</h3>
+                        <p>Understand matrix factorization</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Lesson Content Sections (Initially Hidden) -->
+            <div id="cramers-rule-content" class="lesson-content-detail">
+                <header class="page-header">
+                    <h1>Cramer's Rule</h1>
+                </header>
+                <div class="lesson-detail-content">
+                    <div class="lesson-matrix-background">
+                        <span>NO BACKGROUND WITH MATRICES?</span>
+                        <a href="#" class="matrix-link">CLICK HERE TO LEARN THE BASICS</a>
+
+
         <main class="container">
             <header class="page-header">
                     <h1>Learn {{ topic.replace('-', ' ').title() }}</h1>
@@ -45,49 +107,61 @@
                         <div class="progress-indicator">
                             <div class="progress-bar" style="width: 30%"></div>
                         </div>
+
                     </div>
-                    
-                    <div class="module-navigation">
-                        <a href="#" class="module-nav-btn active">
-                            <span class="module-nav-number">1</span>
-                            <span class="module-nav-title">Introduction</span>
-                        </a>
-                        <a href="#" class="module-nav-btn">
-                            <span class="module-nav-number">2</span>
-                            <span class="module-nav-title">Key Concepts</span>
-                        </a>
-                        <a href="#" class="module-nav-btn">
-                            <span class="module-nav-number">3</span>
-                            <span class="module-nav-title">Step-by-Step</span>
-                        </a>
-                        <a href="#" class="module-nav-btn">
-                            <span class="module-nav-number">4</span>
-                            <span class="module-nav-title">Examples</span>
-                        </a>
-                        <a href="#" class="module-nav-btn">
-                            <span class="module-nav-number">5</span>
-                            <span class="module-nav-title">Practice</span>
-                        </a>
+                    <hr>
+                    <div class="video-section">
+                         <iframe width="560" height="315" src="https://www.youtube.com/embed/G9PCc_ZS0q4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
-                </div>
-                
-                <div class="lesson-content">
-                    <div class="lesson-section" id="introduction">
-                        <h2>Introduction to {{ topic.replace('-', ' ').title() }}</h2>
-                        <p class="lesson-text">
-                            {{ topic.replace('-', ' ').title() }} is a powerful method for solving systems of linear equations. It provides a systematic approach to finding solutions by manipulating matrices.
-                        </p>
-                        <div class="math-display">
-                            $$\text{Let's explore how } {{ topic.replace('-', ' ').title() }} \text{ works for solving linear systems.}$$
-                        </div>
+                    <h2>Cramer's Rule</h2>
+                    <div class="course-objective">
+                        <strong>Course Objective</strong>
+                        <p>To help learners understand and apply Cramer's Rule to solve systems of linear equations using determinants.</p>
                     </div>
-                    
-                    <div class="lesson-navigation-buttons">
-                        <button class="btn btn-disabled">Previous</button>
-                        <button class="btn">Next: Key Concepts</button>
+                    <div class="lesson-list">
+                        <p><strong>Lesson 1:</strong> <a href="#">Review of Determinants</a></p>
+                        <p><strong>Lesson 2:</strong> <a href="#">Applying Cramer's Rule</a></p>
+                        <p><strong>Lesson 3:</strong> <a href="#">When not to use Cramer's Rule</a></p>
                     </div>
                 </div>
             </div>
+
+            <div id="gauss-elimination-content" class="lesson-content-detail">
+                 <header class="page-header">
+                     <h1>Gauss Elimination</h1>
+                 </header>
+                 <div class="lesson-detail-content">
+                     <div class="video-section">
+                         <iframe width="560" height="315" src="https://www.youtube.com/embed/Z1pm64Vhb2Q" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                     </div>
+                     <p>Master the method of elimination for solving linear systems.</p>
+                 </div>
+            </div>
+
+             <div id="gauss-jordan-content" class="lesson-content-detail">
+                 <header class="page-header">
+                     <h1>Gauss Jordan</h1>
+                 </header>
+                 <div class="lesson-detail-content">
+                      <div class="video-section">
+                         <iframe width="560" height="315" src="https://www.youtube.com/embed/Z1pm64Vhb2Q" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                     </div>
+                     <p>Learn reduced row echelon form and its applications.</p>
+                 </div>
+            </div>
+
+             <div id="lu-decomposition-content" class="lesson-content-detail">
+                 <header class="page-header">
+                     <h1>LU Decomposition</h1>
+                 </header>
+                 <div class="lesson-detail-content">
+                      <div class="video-section">
+                         <iframe width="560" height="315" src="https://www.youtube.com/embed/PitNZ2H4KIg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                     </div>
+                     <p>Understand matrix factorization.</p>
+                 </div>
+            </div>
+
         </main>
 
         <!-- Bottom Navigation Bar -->
