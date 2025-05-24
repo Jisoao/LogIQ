@@ -10,66 +10,31 @@
     <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
 </head>
 <body>
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <a href="/" class="sidebar-logo">LogIQ</a>
-        </div>
-        <div class="sidebar-nav">
-            <a href="/" class="sidebar-nav-item">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
-            </a>
-            <a href="/learn/cramers-rule" class="sidebar-nav-item">
-                <i class="fas fa-book-open"></i>
-                <span>Learn</span>
-            </a>
-            <a href="/calculator" class="sidebar-nav-item">
-                <i class="fas fa-calculator"></i>
-                <span>Practice</span>
-            </a>
-            <a href="/matrix-calculator" class="sidebar-nav-item">
-                <i class="fas fa-table-cells"></i>
-                <span>Calculator</span>
-            </a>
-            <a href="/game" class="sidebar-nav-item active">
-                <i class="fas fa-gamepad"></i>
-                <span>Game</span>
-            </a>
-            <a href="/profile" class="sidebar-nav-item">
-                <i class="fas fa-user"></i>
-                <span>Profile</span>
-            </a>
-            <a href="/about" class="sidebar-nav-item">
-                <i class="fas fa-info-circle"></i>
-                <span>About Us</span>
-            </a>
-            <a href="/settings" class="sidebar-nav-item">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
-            </a>
-        </div>
-        <div class="sidebar-footer">
-            <button class="logout-btn" id="logoutBtn">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Log Out</span>
-            </button>
-        </div>
-    </aside>
-    
-    <!-- Main Content -->
     <div class="main-content">
         <!-- Top Header Bar -->
         <nav class="navbar">
-            <div class="logo">LogIQ</div>
-            <div class="page-title">Matrix Challenge</div>
+            <a href="/" class="logo">LogIQ</a>
+            <div class="nav-actions">
+                <a href="/profile" class="profile-link">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="username">Guest</span>
+                </a>
+                <a href="/auth" class="login-btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
         </nav>
 
         <main class="container">
-            <section class="game-header">
+            <header class="page-header">
                 <h1>Matrix Challenge</h1>
                 <p>Test your matrix operations knowledge with fun challenges!</p>
-            </section>
+            </header>
 
             <div class="game-container">
                 <div class="game-sidebar">
@@ -165,6 +130,30 @@
                 </div>
             </div>
         </main>
+
+        <!-- Bottom Navigation Bar -->
+        <div class="bottom-nav">
+            <a href="/" class="bottom-nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/learn/cramers-rule" class="bottom-nav-item">
+                <i class="fas fa-book-open"></i>
+                <span>Learn</span>
+            </a>
+            <a href="/calculator" class="bottom-nav-item">
+                <i class="fas fa-calculator"></i>
+                <span>Calculator</span>
+            </a>
+            <a href="/game" class="bottom-nav-item active">
+                <i class="fas fa-gamepad"></i>
+                <span>Game</span>
+            </a>
+            <a href="/profile" class="bottom-nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
     </div>
     
     <!-- Help Modal -->
@@ -184,7 +173,6 @@
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
 </body>
 </html> 
