@@ -1,3 +1,167 @@
+/**
+ * Homepage interactions and animations
+ */
+
+document.addEventListener('DOMContentLoaded', function() {
+    initCardHoverEffects();
+    initProgressRings();
+    updateUsername();
+    setupAuth();
+    addStatusBadges();
+});
+
+/**
+ * Initialize card hover effects with gradient follow
+ */
+function initCardHoverEffects() {
+    const cards = document.querySelectorAll('.method-card');
+    
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            // Get position relative to card
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            
+            // Set CSS custom properties for the gradient position
+            card.style.setProperty('--x', `${x}%`);
+            card.style.setProperty('--y', `${y}%`);
+            
+            // Add hovered class for style effects
+            card.classList.add('hovered');
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.classList.remove('hovered');
+        });
+    });
+}
+
+/**
+ * Initialize progress rings animation
+ */
+function initProgressRings() {
+    const progressCards = document.querySelectorAll('.progress-card');
+    
+    progressCards.forEach(card => {
+        const ring = card.querySelector('.progress-indicator');
+        const percentage = card.querySelector('.percentage').textContent;
+        const value = parseInt(percentage);
+        
+        // Set initial value of circle to full (to prepare for animation)
+        ring.style.strokeDashoffset = '100';
+        
+        // Set a timeout to allow the browser to paint the initial state
+        setTimeout(() => {
+            // Calculate stroke dash offset from percentage (100 - value because stroke-dashoffset works backwards)
+            const offset = 100 - value;
+            ring.style.strokeDashoffset = offset;
+        }, 300);
+    });
+    
+    // Also animate method cards' progress status
+    const methodCards = document.querySelectorAll('.method-card');
+    methodCards.forEach(card => {
+        const progress = card.getAttribute('data-progress');
+        if (progress) {
+            const value = parseInt(progress);
+            
+            // Set appropriate status badge based on progress value
+            let statusClass = 'status-badge-not-started';
+            let statusText = 'Not Started';
+            
+            if (value > 0 && value < 100) {
+                statusClass = 'status-badge-in-progress';
+                statusText = 'In Progress';
+            } else if (value === 100) {
+                statusClass = 'status-badge-completed';
+                statusText = 'Completed';
+            }
+            
+            // Create status badge if it doesn't exist
+            if (!card.querySelector('.status-badge')) {
+                const badge = document.createElement('div');
+                badge.className = `status-badge ${statusClass}`;
+                badge.textContent = statusText;
+                card.appendChild(badge);
+            }
+        }
+    });
+}
+
+/**
+ * Update username from localStorage if available and handle auth UI
+ */
+function updateUsername() {
+    const usernameElement = document.getElementById('username');
+    const storedUsername = localStorage.getItem('username') || 'Guest';
+    
+    if (usernameElement) {
+        usernameElement.textContent = storedUsername;
+    }
+}
+
+/**
+ * Setup authentication UI elements
+ */
+function setupAuth() {
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const profileLink = document.querySelector('.profile-link');
+    
+    // Check if user is logged in (from localStorage)
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    
+    // Show/hide login/logout buttons based on auth status
+    if (loginBtn && logoutBtn) {
+        if (isLoggedIn) {
+            loginBtn.style.display = 'none';
+            logoutBtn.style.display = 'flex';
+        } else {
+            loginBtn.style.display = 'flex';
+            logoutBtn.style.display = 'none';
+        }
+    }
+    
+    // Setup logout functionality
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.setItem('username', 'Guest');
+            window.location.reload();
+        });
+    }
+}
+
+/**
+ * Add status badges to method cards
+ */
+function addStatusBadges() {
+    const methodCards = document.querySelectorAll('.method-card');
+    methodCards.forEach(card => {
+        // Skip if badge already exists
+        if (card.querySelector('.status-badge')) return;
+        
+        // Create badge based on progress data or card data
+        const progressPercentage = card.dataset.progress || "0";
+        let badgeText = 'Not Started';
+        let badgeClass = 'status-badge-not-started';
+        
+        if (progressPercentage > 0 && progressPercentage < 100) {
+            badgeText = 'In Progress';
+            badgeClass = 'status-badge-in-progress';
+        } else if (progressPercentage == 100) {
+            badgeText = 'Completed';
+            badgeClass = 'status-badge-completed';
+        }
+        
+        const badge = document.createElement('span');
+        badge.className = `status-badge ${badgeClass}`;
+        badge.textContent = badgeText;
+        card.appendChild(badge);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize progress rings
     const cards = document.querySelectorAll('.method-card');

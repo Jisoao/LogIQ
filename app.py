@@ -26,6 +26,10 @@ def learn(topic):
 def calculator():
     return render_template('calculator.html')
 
+@app.route('/matrix-calculator')
+def matrix_calculator():
+    return render_template('matrix_calculator.html')
+
 @app.route('/profile')
 def profile():
     return render_template('profile.html')
@@ -33,6 +37,14 @@ def profile():
 @app.route('/game')
 def game():
     return render_template('game.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/settings')
+def settings():
+    return render_template('settings.html')
 
 @app.route('/api/calculate', methods=['POST'])
 def calculate():

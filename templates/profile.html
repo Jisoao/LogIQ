@@ -10,115 +10,127 @@
     <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="logo">LogIQ</div>
-        <div class="user-controls">
-            <span class="user-info">Welcome, <span id="username">Guest</span></span>
-            <div class="auth-buttons">
-                <a href="/auth" class="auth-button" id="login-button">Login</a>
-                <button class="logout-button" id="logout-button" style="display:none;">Logout</button>
-            </div>
-        </div>
-    </nav>
-
-    <main class="container">
-        <section class="profile-header">
-            <h1>User Profile</h1>
-            <p>Manage your account and track your learning progress</p>
-        </section>
-
-        <div class="profile-content">
-            <div class="profile-card">
-                <div class="profile-avatar">
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Header Bar -->
+        <nav class="navbar">
+            <a href="/" class="logo">LogIQ</a>
+            <div class="nav-actions">
+                <a href="/profile" class="profile-link">
                     <i class="fas fa-user-circle"></i>
-                </div>
-                <div class="profile-info">
-                    <h2 id="profile-name">Guest User</h2>
-                    <p id="profile-email">guest@example.com</p>
-                    <p class="join-date">Joined: <span id="profile-joined">Today</span></p>
-                </div>
-                <div class="profile-actions">
-                    <button class="btn btn-accent"><i class="fas fa-pencil-alt"></i> Edit Profile</button>
-                </div>
+                    <span id="username">Guest</span>
+                </a>
+                <a href="/auth" class="login-btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
             </div>
+        </nav>
 
-            <div class="stats-card">
-                <h2>Learning Statistics</h2>
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-value">1</div>
-                        <div class="stat-label">Methods Started</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">0</div>
-                        <div class="stat-label">Methods Completed</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">25%</div>
-                        <div class="stat-label">Overall Progress</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">5</div>
-                        <div class="stat-label">Practice Problems</div>
-                    </div>
-                </div>
-            </div>
+        <main class="container">
+            <section class="profile-header">
+                <h1>User Profile</h1>
+                <p>Manage your account and track your learning progress</p>
+            </section>
 
-            <div class="achievements-card">
-                <h2>Achievements</h2>
-                <div class="achievements-grid">
-                    <div class="achievement">
-                        <div class="achievement-icon locked">
-                            <i class="fas fa-award"></i>
-                        </div>
-                        <div class="achievement-name">Matrix Master</div>
+            <div class="profile-content">
+                <div class="profile-card">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-circle"></i>
                     </div>
-                    <div class="achievement">
-                        <div class="achievement-icon locked">
-                            <i class="fas fa-medal"></i>
-                        </div>
-                        <div class="achievement-name">Problem Solver</div>
+                    <div class="profile-info">
+                        <h2 id="profile-name">Guest User</h2>
+                        <p id="profile-email">guest@example.com</p>
+                        <p class="join-date">Joined: <span id="profile-joined">Today</span></p>
                     </div>
-                    <div class="achievement">
-                        <div class="achievement-icon">
-                            <i class="fas fa-user-graduate"></i>
-                        </div>
-                        <div class="achievement-name">New Learner</div>
+                    <div class="profile-actions">
+                        <button class="btn btn-accent"><i class="fas fa-pencil-alt"></i> Edit Profile</button>
                     </div>
-                    <div class="achievement">
-                        <div class="achievement-icon locked">
-                            <i class="fas fa-trophy"></i>
+                </div>
+
+                <div class="stats-card">
+                    <h2>Learning Statistics</h2>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">1</div>
+                            <div class="stat-label">Methods Started</div>
                         </div>
-                        <div class="achievement-name">Determinant Wizard</div>
+                        <div class="stat-item">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Methods Completed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">25%</div>
+                            <div class="stat-label">Overall Progress</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Practice Problems</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievements-card">
+                    <h2>Achievements</h2>
+                    <div class="achievements-grid">
+                        <div class="achievement">
+                            <div class="achievement-icon locked">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="achievement-name">Matrix Master</div>
+                        </div>
+                        <div class="achievement">
+                            <div class="achievement-icon locked">
+                                <i class="fas fa-medal"></i>
+                            </div>
+                            <div class="achievement-name">Problem Solver</div>
+                        </div>
+                        <div class="achievement">
+                            <div class="achievement-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div class="achievement-name">New Learner</div>
+                        </div>
+                        <div class="achievement">
+                            <div class="achievement-icon locked">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="achievement-name">Determinant Wizard</div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </main>
+        
+        <!-- Bottom Navigation Bar -->
+        <div class="bottom-nav">
+            <a href="/" class="bottom-nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/learn/cramers-rule" class="bottom-nav-item">
+                <i class="fas fa-book-open"></i>
+                <span>Learn</span>
+            </a>
+            <a href="/matrix-calculator" class="bottom-nav-item">
+                <i class="fas fa-calculator"></i>
+                <span>Matrix Calculator</span>
+            </a>
+            <a href="/game" class="bottom-nav-item">
+                <i class="fas fa-gamepad"></i>
+                <span>Game</span>
+            </a>
+            <a href="/profile" class="bottom-nav-item active">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
         </div>
-    </main>
-
-    <nav class="bottom-nav">
-        <a href="/" class="nav-item">
-            <i class="icon fas fa-home"></i>
-            <span>Home</span>
-        </a>
-        <a href="/calculator" class="nav-item">
-            <i class="icon fas fa-calculator"></i>
-            <span>Practice</span>
-        </a>
-        <a href="/learn/cramers-rule" class="nav-item">
-            <i class="icon fas fa-book-open"></i>
-            <span>Learn</span>
-        </a>
-        <a href="/game" class="nav-item">
-            <i class="icon fas fa-gamepad"></i>
-            <span>Game</span>
-        </a>
-        <a href="/profile" class="nav-item active">
-            <i class="icon fas fa-user"></i>
-            <span>Profile</span>
-        </a>
-    </nav>
-
+    </div>
+    
     <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
 </body>
 </html> 

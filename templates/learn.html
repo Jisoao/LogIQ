@@ -3,86 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogIQ - Learn</title>
+    <title>Learn - LogIQ</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/learn.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <nav class="navbar">
-        <a href="/" class="back-button">←</a>
-        <div class="logo">LogIQ</div>
-        <div class="progress-indicator">1/3</div>
-    </nav>
-
-    <main class="container">
-        <h1 class="topic-title">{{ topic.replace('-', ' ').title() }}</h1>
+    <div class="main-content">
+        <!-- Top Header Bar -->
+        <nav class="navbar">
+            <a href="/" class="logo">LogIQ</a>
+            <div class="user-info">
+                <i class="fas fa-user-circle"></i>
+                <span id="username">Username</span>
+            </div>
+        </nav>
         
-        <section class="video-section">
-            <div class="video-container">
-                <div class="video-placeholder">
-                    <button class="play-button">▶</button>
-                </div>
-            </div>
-        </section>
-
-        <section class="lesson-content">
-            <div class="course-objective">
-                <h2>Course Objective</h2>
-                <p>To help students understand and apply {{ topic.replace('-', ' ').title() }} to solve systems of linear equations using determinants.</p>
-            </div>
-
-            <div class="lessons-list">
-                <div class="lesson-item active">
-                    <span class="lesson-number">1</span>
-                    <div class="lesson-info">
-                        <h3>Review of Determinants</h3>
-                        <p>Understanding the basics of determinants and their properties</p>
-                    </div>
-                </div>
-
-                <div class="lesson-item">
-                    <span class="lesson-number">2</span>
-                    <div class="lesson-info">
-                        <h3>Applying {{ topic.replace('-', ' ').title() }}</h3>
-                        <p>Step-by-step guide to solving equations</p>
-                    </div>
-                </div>
-
-                <div class="lesson-item">
-                    <span class="lesson-number">3</span>
-                    <div class="lesson-info">
-                        <h3>When Not to Use</h3>
-                        <p>Understanding limitations and alternative methods</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="navigation-buttons">
-            <button class="nav-button prev" disabled>Previous</button>
-            <button class="nav-button next">Next</button>
+        <!-- Navigation Bar -->
+        <div class="bottom-nav">
+            <a href="/" class="bottom-nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/learn/cramers-rule" class="bottom-nav-item active">
+                <i class="fas fa-book-open"></i>
+                <span>Learn</span>
+            </a>
+            <a href="/calculator" class="bottom-nav-item">
+                <i class="fas fa-calculator"></i>
+                <span>Calculate</span>
+            </a>
+            <a href="/game" class="bottom-nav-item">
+                <i class="fas fa-gamepad"></i>
+                <span>Practice</span>
+            </a>
         </div>
-    </main>
 
-    <nav class="bottom-nav">
-        <a href="/" class="nav-item">
-            <i class="icon">🏠</i>
-            <span>Home</span>
-        </a>
-        <a href="/calculator" class="nav-item">
-            <i class="icon">🧮</i>
-            <span>Practice</span>
-        </a>
-        <a href="/learn/cramers-rule" class="nav-item active">
-            <i class="icon">📚</i>
-            <span>Learn</span>
-        </a>
-        <a href="/profile" class="nav-item">
-            <i class="icon">👤</i>
-            <span>Profile</span>
-        </a>
-    </nav>
-
+        <main class="container">
+            <header class="page-header">
+                <h1>Learn {{ topic.replace('-', ' ').title() }}</h1>
+                <p>Master the concept through interactive lessons</p>
+            </header>
+            
+            <div class="lesson-container">
+                <div class="lesson-navigation">
+                    <div class="current-module">
+                        <h2>{{ topic.replace('-', ' ').title() }}</h2>
+                        <div class="progress-indicator">
+                            <div class="progress-bar" style="width: 30%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="module-navigation">
+                        <a href="#" class="module-nav-btn active">
+                            <span class="module-nav-number">1</span>
+                            <span class="module-nav-title">Introduction</span>
+                        </a>
+                        <a href="#" class="module-nav-btn">
+                            <span class="module-nav-number">2</span>
+                            <span class="module-nav-title">Key Concepts</span>
+                        </a>
+                        <a href="#" class="module-nav-btn">
+                            <span class="module-nav-number">3</span>
+                            <span class="module-nav-title">Step-by-Step</span>
+                        </a>
+                        <a href="#" class="module-nav-btn">
+                            <span class="module-nav-number">4</span>
+                            <span class="module-nav-title">Examples</span>
+                        </a>
+                        <a href="#" class="module-nav-btn">
+                            <span class="module-nav-number">5</span>
+                            <span class="module-nav-title">Practice</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="lesson-content">
+                    <div class="lesson-section" id="introduction">
+                        <h2>Introduction to {{ topic.replace('-', ' ').title() }}</h2>
+                        <p class="lesson-text">
+                            {{ topic.replace('-', ' ').title() }} is a powerful method for solving systems of linear equations. It provides a systematic approach to finding solutions by manipulating matrices.
+                        </p>
+                        <div class="math-display">
+                            $$\text{Let's explore how } {{ topic.replace('-', ' ').title() }} \text{ works for solving linear systems.}$$
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-navigation-buttons">
+                        <button class="btn btn-disabled">Previous</button>
+                        <button class="btn">Next: Key Concepts</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
     <script src="{{ url_for('static', filename='js/learn.js') }}"></script>
 </body>
 </html> 
