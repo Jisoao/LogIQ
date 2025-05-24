@@ -1,8 +1,8 @@
+/* Homepage specific styles */
 :root {
     --border-radius-md: 0.5rem;
     --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     --card-hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* Using the existing color variables from style.css */
 }
 
 body {
@@ -11,14 +11,6 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--background);
     color: var(--foreground);
-}
-
-.navbar {
-    /* Removed to avoid conflicts with style.css */
-}
-
-.logo {
-    /* Removed to avoid conflicts with style.css */
 }
 
 .container {
@@ -432,32 +424,12 @@ body {
         grid-template-columns: 1fr;
     }
     
-    /* Remove conflicting bottom-nav styles */
-    /*
-    .bottom-nav {
-        padding: 8px;
-    }
-    
-    .bottom-nav-item {
-        font-size: 10px;
-    }
-    
-    .bottom-nav-item i {
-        font-size: 18px;
-    }
-    */
-    
     .method-icon {
         width: 56px;
         height: 56px;
         font-size: 20px;
     }
 }
-
-/* Homepage Specific Styles */
-
-/* Hero header animation */
-/* Hero header animation - removed for consistency */
 
 /* Enhanced method cards */
 .method-card {
@@ -683,29 +655,6 @@ body {
     border: 1px solid var(--border);
 }
 
-/* Remove bottom nav enhancements */
-/*
-.bottom-nav {
-    background: white;
-    border-top: 1px solid var(--border);
-    padding: 10px;
-}
-
-@media (min-width: 1024px) {
-    .bottom-nav {
-        padding: 12px 20px;
-        grid-template-columns: repeat(5, 1fr);
-        max-width: 900px;
-        margin: 0 auto;
-        left: 50%;
-        transform: translateX(-50%);
-        border-radius: var(--radius) var(--radius) 0 0;
-        border-left: 1px solid var(--border);
-        border-right: 1px solid var(--border);
-    }
-}
-*/
-
 @media (max-width: 768px) {
     .progress-card-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -737,4 +686,4 @@ body {
     .profile-link span {
         display: none;
     }
-} 
+}

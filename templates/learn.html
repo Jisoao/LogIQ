@@ -9,17 +9,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
 </head>
 <body>
     <div class="main-content">
         <!-- Top Header Bar -->
         <nav class="navbar">
             <a href="/" class="logo">LogIQ</a>
-            <div class="user-info">
-                <i class="fas fa-user-circle"></i>
-                <span id="username">Username</span>
+            <div class="nav-actions">
+                <a href="/profile" class="profile-link">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="username">Guest</span>
+                </a>
+                <a href="/auth" class="login-btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
             </div>
         </nav>
+
         
         <!-- Navigation Bar -->
         <div class="bottom-nav">
@@ -80,6 +92,22 @@
                     <div class="lesson-matrix-background">
                         <span>NO BACKGROUND WITH MATRICES?</span>
                         <a href="#" class="matrix-link">CLICK HERE TO LEARN THE BASICS</a>
+
+
+        <main class="container">
+            <header class="page-header">
+                    <h1>Learn {{ topic.replace('-', ' ').title() }}</h1>
+                    <p>Master the concept through interactive lessons</p>
+            </header>
+            
+            <div class="lesson-container">
+                <div class="lesson-navigation">
+                    <div class="current-module">
+                        <h2>{{ topic.replace('-', ' ').title() }}</h2>
+                        <div class="progress-indicator">
+                            <div class="progress-bar" style="width: 30%"></div>
+                        </div>
+
                     </div>
                     <hr>
                     <div class="video-section">
@@ -135,6 +163,30 @@
             </div>
 
         </main>
+
+        <!-- Bottom Navigation Bar -->
+        <div class="bottom-nav">
+            <a href="/" class="bottom-nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/learn/cramers-rule" class="bottom-nav-item active">
+                <i class="fas fa-book-open"></i>
+                <span>Learn</span>
+            </a>
+            <a href="/matrix-calculator" class="bottom-nav-item">
+                <i class="fas fa-calculator"></i>
+                <span>Matrix Calculator</span>
+            </a>
+            <a href="/game" class="bottom-nav-item">
+                <i class="fas fa-gamepad"></i>
+                <span>Game</span>
+            </a>
+            <a href="/profile" class="bottom-nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
     </div>
     
     <script src="{{ url_for('static', filename='js/learn.js') }}"></script>

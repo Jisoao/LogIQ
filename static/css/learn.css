@@ -60,6 +60,7 @@
     }
 }
 
+
 .lesson-buttons {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -106,3 +107,4 @@
 .lesson-content-detail {
     display: none;
 } 
+

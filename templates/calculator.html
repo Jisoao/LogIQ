@@ -7,37 +7,28 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/calculator.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
 </head>
 <body>
     <div class="main-content">
         <!-- Top Header Bar -->
         <nav class="navbar">
             <a href="/" class="logo">LogIQ</a>
-            <div class="user-info">
-                <i class="fas fa-user-circle"></i>
-                <span id="username">Username</span>
+            <div class="nav-actions">
+                <a href="/profile" class="profile-link">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="username">Guest</span>
+                </a>
+                <a href="/auth" class="login-btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
             </div>
         </nav>
-        
-        <!-- Navigation Bar -->
-        <div class="bottom-nav">
-            <a href="/" class="bottom-nav-item">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
-            </a>
-            <a href="/learn/cramers-rule" class="bottom-nav-item">
-                <i class="fas fa-book-open"></i>
-                <span>Learn</span>
-            </a>
-            <a href="/calculator" class="bottom-nav-item active">
-                <i class="fas fa-calculator"></i>
-                <span>Calculate</span>
-            </a>
-            <a href="/game" class="bottom-nav-item">
-                <i class="fas fa-gamepad"></i>
-                <span>Practice</span>
-            </a>
-        </div>
 
         <main class="container">
             <header class="page-header">
@@ -127,6 +118,30 @@
                 </div>
             </div>
         </main>
+
+        <!-- Bottom Navigation Bar -->
+        <div class="bottom-nav">
+            <a href="/" class="bottom-nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/learn/cramers-rule" class="bottom-nav-item">
+                <i class="fas fa-book-open"></i>
+                <span>Learn</span>
+            </a>
+            <a href="/calculator" class="bottom-nav-item active">
+                <i class="fas fa-calculator"></i>
+                <span>Calculator</span>
+            </a>
+            <a href="/game" class="bottom-nav-item">
+                <i class="fas fa-gamepad"></i>
+                <span>Game</span>
+            </a>
+            <a href="/profile" class="bottom-nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
     </div>
     
     <script src="{{ url_for('static', filename='js/calculator.js') }}"></script>
