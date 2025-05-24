@@ -332,6 +332,12 @@ input.matrix-input:focus {
     transform: translateY(-2px);
 }
 
+/* Bottom navigation */
+.bottom-nav {
+    margin-top: 3rem;
+    border-radius: var(--radius);
+}
+
 @media (max-width: 768px) {
     .calculator-container {
         padding: 1rem;

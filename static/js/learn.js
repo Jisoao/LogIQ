@@ -1,4 +1,39 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Authentication elements
+    const loginButton = document.getElementById('login-button');
+    const logoutButton = document.getElementById('logout-button');
+    const usernameElement = document.getElementById('username');
+
+    // Check authentication state
+    function checkAuthState() {
+        const isLoggedIn = sessionStorage.getItem('userLoggedIn') === 'true';
+        const username = sessionStorage.getItem('username');
+
+        if (isLoggedIn && username) {
+            // Update UI for logged in user
+            if (usernameElement) usernameElement.textContent = username;
+            if (loginButton) loginButton.style.display = 'none';
+            if (logoutButton) logoutButton.style.display = 'block';
+        } else {
+            // Update UI for guest user
+            if (usernameElement) usernameElement.textContent = 'Guest';
+            if (loginButton) loginButton.style.display = 'block';
+            if (logoutButton) logoutButton.style.display = 'none';
+        }
+    }
+
+    // Handle logout
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            sessionStorage.removeItem('userLoggedIn');
+            sessionStorage.removeItem('username');
+            window.location.href = '/auth';
+        });
+    }
+
+    // Check auth state on page load
+    checkAuthState();
+
     const lessonButtons = document.querySelectorAll('.lesson-button');
     const lessonSelection = document.getElementById('lesson-selection');
     const lessonContentViews = document.querySelectorAll('.lesson-content-detail');
