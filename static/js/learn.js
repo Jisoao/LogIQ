@@ -1,4 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const lessonButtons = document.querySelectorAll('.lesson-button');
+    const lessonSelection = document.getElementById('lesson-selection');
+    const lessonContentViews = document.querySelectorAll('.lesson-content-detail');
+
+    // Initially hide all lesson content views
+    lessonContentViews.forEach(view => {
+        view.style.display = 'none';
+    });
+
+    lessonButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent default link behavior
+
+            const lessonId = button.dataset.lesson + '-content';
+            const targetContentView = document.getElementById(lessonId);
+
+            if (targetContentView) {
+                // Hide lesson selection
+                lessonSelection.style.display = 'none';
+
+                // Hide all lesson content views first (in case one was already open)
+                lessonContentViews.forEach(view => {
+                    view.style.display = 'none';
+                });
+
+                // Show the selected lesson content view
+                targetContentView.style.display = 'block'; // Or 'flex', 'grid', etc. based on your CSS
+            }
+        });
+    });
+
     const lessonItems = document.querySelectorAll('.lesson-item');
     const prevButton = document.querySelector('.nav-button.prev');
     const nextButton = document.querySelector('.nav-button.next');
