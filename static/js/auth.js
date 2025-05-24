@@ -1,17 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-analytics.js";
-
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAdWP3waol5iOJ2TlneoNFg48hMxX_DWDo",
-  authDomain: "logiq-5012d.firebaseapp.com",
-  projectId: "logiq-5012d",
-  storageBucket: "logiq-5012d.firebasestorage.app",
-  messagingSenderId: "181685211903",
-  appId: "1:181685211903:web:efbb6296140011220c72ca"
-};
-
+import { firebaseConfig } from './config.js';
 
 // Initialize Firebase
 let app;
@@ -26,33 +16,27 @@ try {
   console.error("Firebase initialization error:", error);
 }
 
-// Toggle forms
-function showLogin() {
-  document.getElementById('registerForm').style.display = 'none';
-  document.getElementById('loginForm').style.display = 'block';
-  clearMessages();
-  document.getElementById('switchLogin')?.classList.add('active');
-  document.getElementById('switchRegister')?.classList.remove('active');
+// Form validation
+function validateEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
 }
 
-function showRegister() {
-  document.getElementById('registerForm').style.display = 'block';
-  document.getElementById('loginForm').style.display = 'none';
-  clearMessages();
-  document.getElementById('switchRegister')?.classList.add('active');
-  document.getElementById('switchLogin')?.classList.remove('active');
+function validatePassword(password) {
+  return password.length >= 6;
 }
 
 function clearMessages() {
-  document.getElementById('registerError')?.textContent = '';
-  document.getElementById('registerSuccess')?.textContent = '';
-  document.getElementById('loginError')?.textContent = '';
-  document.getElementById('loginSuccess')?.textContent = '';
+  var el;
+  el = document.getElementById('registerError');
+  if (el) el.textContent = '';
+  el = document.getElementById('registerSuccess');
+  if (el) el.textContent = '';
+  el = document.getElementById('loginError');
+  if (el) el.textContent = '';
+  el = document.getElementById('loginSuccess');
+  if (el) el.textContent = '';
 }
-
-// Make functions globally available
-window.showLogin = showLogin;
-window.showRegister = showRegister;
 
 // Registration form handler
 document.getElementById('registerForm')?.addEventListener('submit', function(event) {
@@ -65,23 +49,46 @@ document.getElementById('registerForm')?.addEventListener('submit', function(eve
   const errorEl = document.getElementById('registerError');
   const successEl = document.getElementById('registerSuccess');
 
+  // Validate email
+  if (!validateEmail(email)) {
+    errorEl.textContent = "Please enter a valid email address.";
+    return;
+  }
+
+  // Validate password
+  if (!validatePassword(password)) {
+    errorEl.textContent = "Password must be at least 6 characters long.";
+    return;
+  }
+
   if (password !== confirm) {
     errorEl.textContent = "Passwords do not match.";
     return;
   }
 
-  if (password.length < 6) {
-    errorEl.textContent = "Password must be at least 6 characters.";
-    return;
-  }
-
   createUserWithEmailAndPassword(auth, email, password)
-    .then(() => {
+    .then((userCredential) => {
       successEl.textContent = "Registration successful! Please log in.";
-      setTimeout(showLogin, 1200);
+      // Store user info in sessionStorage
+      const username = email.split('@')[0];
+      sessionStorage.setItem('userLoggedIn', 'true');
+      sessionStorage.setItem('username', username);
+      setTimeout(() => {
+        document.getElementById('registerForm').style.display = 'none';
+        document.getElementById('loginForm').style.display = 'block';
+      }, 1200);
     })
     .catch((error) => {
-      errorEl.textContent = error.message;
+      switch (error.code) {
+        case 'auth/email-already-in-use':
+          errorEl.textContent = "This email is already registered. Please log in instead.";
+          break;
+        case 'auth/invalid-email':
+          errorEl.textContent = "Please enter a valid email address.";
+          break;
+        default:
+          errorEl.textContent = "An error occurred during registration. Please try again.";
+      }
     });
 });
 
@@ -95,6 +102,12 @@ document.getElementById('loginForm')?.addEventListener('submit', function(event)
   const errorEl = document.getElementById('loginError');
   const successEl = document.getElementById('loginSuccess');
 
+  // Validate email
+  if (!validateEmail(email)) {
+    errorEl.textContent = "Please enter a valid email address.";
+    return;
+  }
+
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Store user info in sessionStorage
@@ -103,13 +116,24 @@ document.getElementById('loginForm')?.addEventListener('submit', function(event)
       sessionStorage.setItem('username', username);
       
       successEl.textContent = "Login successful! Redirecting...";
-      // Use a more reliable redirection method
       setTimeout(() => {
         window.location.replace('/');
       }, 1000);
     })
     .catch((error) => {
-      errorEl.textContent = error.message;
+      switch (error.code) {
+        case 'auth/user-not-found':
+          errorEl.textContent = "No account found with this email. Please sign up first.";
+          break;
+        case 'auth/wrong-password':
+          errorEl.textContent = "Incorrect password. Please try again.";
+          break;
+        case 'auth/invalid-email':
+          errorEl.textContent = "Please enter a valid email address.";
+          break;
+        default:
+          errorEl.textContent = "An error occurred during login. Please try again.";
+      }
     });
 });
 
@@ -131,7 +155,7 @@ function handleLogout() {
 }
 
 // Attach logout handler to logout buttons
-document.querySelectorAll('.logout-button').forEach(button => {
+document.querySelectorAll('#logoutBtn').forEach(button => {
   button.addEventListener('click', handleLogout);
 });
 
@@ -156,11 +180,11 @@ onAuthStateChanged(auth, (user) => {
     }
     
     // Update login/logout buttons
-    document.querySelectorAll('#login-button').forEach(el => {
-      el.style.display = 'none';
+    document.querySelectorAll('#loginBtn').forEach(el => {
+      if (el) el.style.display = 'none';
     });
-    document.querySelectorAll('#logout-button').forEach(el => {
-      el.style.display = 'block';
+    document.querySelectorAll('#logoutBtn').forEach(el => {
+      if (el) el.style.display = 'block';
     });
   } else {
     console.log('No user is signed in');
@@ -172,26 +196,57 @@ onAuthStateChanged(auth, (user) => {
     document.querySelectorAll('#username').forEach(el => {
       if (el) el.textContent = 'Guest';
     });
-    document.querySelectorAll('#login-button').forEach(el => {
+    document.querySelectorAll('#loginBtn').forEach(el => {
       if (el) el.style.display = 'block';
     });
-    document.querySelectorAll('#logout-button').forEach(el => {
+    document.querySelectorAll('#logoutBtn').forEach(el => {
       if (el) el.style.display = 'none';
     });
-    
-    // Redirect to auth page if not logged in and not already on auth page
-    if (!window.location.pathname.includes('auth') && !window.location.pathname.includes('login')) {
-      // Uncomment this line when auth is fully implemented:
-      // window.location.replace('/auth');
-    }
   }
 });
 
 // On page load, show the correct form based on the hash
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', () => {
   if (window.location.hash === '#signup') {
-    showRegister();
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = 'block';
   } else {
-    showLogin();
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('registerForm').style.display = 'none';
   }
-}); 
+});
+
+function handleForgotPassword() {
+  const email = document.getElementById('loginEmail')?.value.trim();
+  const errorEl = document.getElementById('loginError');
+  const successEl = document.getElementById('loginSuccess');
+  if (!email) {
+    if (errorEl) errorEl.textContent = "Please enter your email address above to reset your password.";
+    return;
+  }
+  // Optionally validate email format
+  if (!validateEmail(email)) {
+    if (errorEl) errorEl.textContent = "Please enter a valid email address.";
+    return;
+  }
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
+      if (successEl) successEl.textContent = "Password reset email sent! Please check your inbox.";
+    })
+    .catch((error) => {
+      if (errorEl) {
+        switch (error.code) {
+          case 'auth/user-not-found':
+            errorEl.textContent = "No account found with this email.";
+            break;
+          case 'auth/invalid-email':
+            errorEl.textContent = "Please enter a valid email address.";
+            break;
+          default:
+            errorEl.textContent = "Failed to send password reset email. Please try again.";
+        }
+      }
+    });
+}
+
+window.handleForgotPassword = handleForgotPassword; 

@@ -6,49 +6,79 @@
   <title>LogIQ | Auth</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script type="module" src="{{ url_for('static', filename='js/config.js') }}"></script>
   <script type="module" src="{{ url_for('static', filename='js/auth.js') }}" defer></script>
 </head>
 <body>
   <button class="auth-logo" onclick="window.location.href='/'">LogIQ</button>
   <div class="auth-card">
-    <button class="back-arrow" onclick="window.location.href='/'" title="Back">&#8592;</button>
-    <!-- Registration Form -->
-    <form id="registerForm">
-      <div class="auth-title">CREATE NEW ACCOUNT</div>
-      <div class="error" id="registerError"></div>
-      <div class="success" id="registerSuccess"></div>
-      <div class="input-group">
-        <label for="regEmail"></label>
-        <input type="email" id="regEmail" required autocomplete="username" placeholder="EMAIL">
-      </div>
-      <div class="input-group">
-        <label for="regPassword"></label>
-        <input type="password" id="regPassword" required autocomplete="new-password" placeholder="PASSWORD">
-      </div>
-      <div class="input-group">
-        <label for="regConfirm"></label>
-        <input type="password" id="regConfirm" required autocomplete="new-password" placeholder="CONFIRM PASSWORD">
-      </div>
-      <button type="submit" class="auth-btn" id="submitBtn">SIGNUP</button>
-      <span class="toggle-link" onclick="window.showLogin()">Already have an account? Click to Login</span>
-    </form>
+    <button class="back-arrow" onclick="window.location.href='/'" title="Back">
+      <i class="fas fa-arrow-left"></i>
+    </button>
 
     <!-- Login Form -->
-    <form id="loginForm" style="display:none;">
-      <div class="auth-title">WELCOME BACK!</div>
+    <form id="loginForm">
+      <div class="auth-title">Welcome Back!</div>
       <div class="error" id="loginError"></div>
       <div class="success" id="loginSuccess"></div>
       <div class="input-group">
-        <label for="loginEmail"></label>
-        <input type="email" id="loginEmail" required autocomplete="username" placeholder="EMAIL">
+        <label for="loginEmail">
+          <i class="fas fa-envelope"></i> Email
+        </label>
+        <input type="email" id="loginEmail" required autocomplete="username" placeholder="Enter your email">
+        <div class="input-feedback"></div>
       </div>
       <div class="input-group">
-        <label for="loginPassword"></label>
-        <input type="password" id="loginPassword" required autocomplete="current-password" placeholder="PASSWORD">
+        <label for="loginPassword">
+          <i class="fas fa-lock"></i> Password
+        </label>
+        <input type="password" id="loginPassword" required autocomplete="current-password" placeholder="Enter your password">
+        <div class="input-feedback"></div>
       </div>
-      <span class="forgot-link" onclick="alert('Password reset is not implemented in this demo.')">Forgot Password</span>
-      <button type="submit" class="login-btn" id="loginBtn">LOG IN</button>
-      <span class="toggle-link" onclick="window.showRegister()">No account? Click to Sign Up</span>
+      <span class="forgot-link" onclick="handleForgotPassword()">
+        <i class="fas fa-key"></i> Forgot Password?
+      </span>
+      <button type="submit" class="auth-action-btn" id="loginBtn">
+        <i class="fas fa-sign-in-alt"></i> Log In
+      </button>
+      <div class="form-switch">
+        Don't have an account yet? <a href="#" onclick="event.preventDefault(); document.getElementById('loginForm').style.display='none'; document.getElementById('registerForm').style.display='block';">Create one</a>
+      </div>
+    </form>
+
+    <!-- Registration Form -->
+    <form id="registerForm" style="display:none;">
+      <div class="auth-title">Create New Account</div>
+      <div class="error" id="registerError"></div>
+      <div class="success" id="registerSuccess"></div>
+      <div class="input-group">
+        <label for="regEmail">
+          <i class="fas fa-envelope"></i> Email
+        </label>
+        <input type="email" id="regEmail" required autocomplete="username" placeholder="Enter your email">
+        <div class="input-feedback"></div>
+      </div>
+      <div class="input-group">
+        <label for="regPassword">
+          <i class="fas fa-lock"></i> Password
+        </label>
+        <input type="password" id="regPassword" required autocomplete="new-password" placeholder="Create a password">
+        <div class="input-feedback">Must be at least 6 characters</div>
+      </div>
+      <div class="input-group">
+        <label for="regConfirm">
+          <i class="fas fa-lock"></i> Confirm Password
+        </label>
+        <input type="password" id="regConfirm" required autocomplete="new-password" placeholder="Confirm your password">
+        <div class="input-feedback"></div>
+      </div>
+      <button type="submit" class="auth-action-btn" id="submitBtn">
+        <i class="fas fa-user-plus"></i> Sign Up
+      </button>
+      <div class="form-switch">
+        Already have an account? <a href="#" onclick="event.preventDefault(); document.getElementById('registerForm').style.display='none'; document.getElementById('loginForm').style.display='block';">Log in</a>
+      </div>
     </form>
   </div>
 </body>
