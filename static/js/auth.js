@@ -216,6 +216,7 @@ window.addEventListener('load', () => {
   }
 });
 
+//Forgot Password
 function handleForgotPassword() {
   const email = document.getElementById('loginEmail')?.value.trim();
   const errorEl = document.getElementById('loginError');
