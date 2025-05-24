@@ -186,6 +186,7 @@ body {
 /* Header for page titles */
 .page-header {
   text-align: center;
+  margin-top: -20px;
   margin-bottom: 40px;
   position: relative;
   background: linear-gradient(135deg, var(--primary), #0d5454);
