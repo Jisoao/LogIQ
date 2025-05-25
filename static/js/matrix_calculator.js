@@ -1,14 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Display username
     displayUsername();
-    
-    // Initialize calculator components
+    setupLogout();
     initCalculator();
 });
 
-/**
- * Display username from session storage
- */
 function displayUsername() {
     const usernameElement = document.getElementById('username');
     if (usernameElement) {
@@ -17,281 +12,405 @@ function displayUsername() {
     }
 }
 
-// DOM Elements
-const methodOptions = document.querySelectorAll('.method-option');
-const matrixSizeOptions = document.querySelectorAll('.size-option');
-const coefficientGrid = document.getElementById('coefficient-grid');
-const resultGrid = document.getElementById('result-grid');
-const calculateBtn = document.getElementById('calculate-btn');
-const randomValuesBtn = document.getElementById('random-values');
-const clearValuesBtn = document.getElementById('clear-values');
-const backToCalculatorBtn = document.getElementById('back-to-calculator');
-const solutionMethodEl = document.getElementById('solution-method');
-const calculatorContainer = document.querySelector('.calculator-container');
-const resultContainer = document.querySelector('.result-container');
-
-// State
-let currentMethod = 'determinant';
-let currentSize = 2;
-let coefficientInputs = [];
-
-// Initialize
-initializeCalculator();
-
-// Method selection
-methodOptions.forEach(option => {
-    option.addEventListener('click', () => {
-        methodOptions.forEach(opt => opt.classList.remove('active'));
-        option.classList.add('active');
-        currentMethod = option.dataset.method;
-        updateOperationSign();
-        
-        // Update UI based on method
-        if (currentMethod === 'multiplication' || currentMethod === 'addition') {
-            showSecondMatrix();
-        } else {
-            hideSecondMatrix();
-        }
-    });
-});
-
-// Matrix size selection
-matrixSizeOptions.forEach(option => {
-    const radio = option.querySelector('input');
-    radio.addEventListener('change', () => {
-        matrixSizeOptions.forEach(opt => opt.classList.remove('active'));
-        option.classList.add('active');
-        currentSize = parseInt(radio.value);
-        createMatrixGrids();
-    });
-});
-
-// Calculate button
-calculateBtn.addEventListener('click', () => {
-    performCalculation();
-});
-
-// Random values button
-randomValuesBtn.addEventListener('click', () => {
-    fillRandomValues();
-});
-
-// Clear button
-clearValuesBtn.addEventListener('click', () => {
-    clearValues();
-});
-
-// Back button
-backToCalculatorBtn.addEventListener('click', () => {
-    calculatorContainer.style.display = 'block';
-    resultContainer.style.display = 'none';
-});
-
-// Initialize calculator
-function initializeCalculator() {
-    createMatrixGrids();
+function setupLogout() {
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            sessionStorage.removeItem('userLoggedIn');
+            sessionStorage.removeItem('username');
+            window.location.href = '/auth';
+        });
+    }
 }
 
-// Create matrix input grids
-function createMatrixGrids() {
-    // Clear existing grids
-    coefficientGrid.innerHTML = '';
-    resultGrid.innerHTML = '';
-    coefficientInputs = [];
-    
-    // Create coefficient matrix
-    for (let i = 0; i < currentSize; i++) {
-        const row = [];
-        for (let j = 0; j < currentSize; j++) {
+function initCalculator() {
+    const methodOptions = document.querySelectorAll('.method-option');
+    let selectedMethod = 'determinant';
+    const sizeOptions = document.querySelectorAll('.size-option input');
+    let matrixSize = 2;
+
+    // Equation input elements
+    const equationInputContainer = document.querySelector('.equation-input-container');
+    let equationFields = document.getElementById('equation-fields');
+
+    const randomBtn = document.getElementById('random-values');
+    const clearBtn = document.getElementById('clear-values');
+    const calculateBtn = document.getElementById('calculate-btn');
+    const backBtn = document.getElementById('back-to-calculator');
+    const resultContainer = document.querySelector('.result-container');
+    const calculatorContainer = document.querySelector('.calculator-container');
+
+    methodOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            methodOptions.forEach(opt => opt.classList.remove('active'));
+            option.classList.add('active');
+            selectedMethod = option.getAttribute('data-method');
+            document.getElementById('solution-method').textContent = option.querySelector('span').textContent;
+            createEquationFields();
+        });
+    });
+
+    sizeOptions.forEach(option => {
+        option.addEventListener('change', function() {
+            matrixSize = parseInt(option.value);
+            document.querySelectorAll('.size-option').forEach(label => label.classList.remove('active'));
+            option.closest('.size-option').classList.add('active');
+            createEquationFields();
+        });
+    });
+
+    function createEquationFields() {
+        if (!equationFields) equationFields = document.getElementById('equation-fields');
+        equationFields.innerHTML = '';
+        for (let i = 0; i < matrixSize; i++) {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'equation-row';
+            const label = document.createElement('label');
+            label.textContent = `Equation ${i + 1}: `;
             const input = document.createElement('input');
-            input.type = 'number';
-            input.className = 'matrix-input';
-            input.value = '0';
-            coefficientGrid.appendChild(input);
-            row.push(input);
+            input.type = 'text';
+            input.className = 'equation-input';
+            input.placeholder = equationPlaceholder(matrixSize, i);
+            input.dataset.idx = i;
+            label.appendChild(input);
+            rowDiv.appendChild(label);
+            equationFields.appendChild(rowDiv);
         }
-        coefficientInputs.push(row);
     }
-    
-    // Set the grid template
-    coefficientGrid.style.gridTemplateColumns = `repeat(${currentSize}, 1fr)`;
-    resultGrid.style.gridTemplateColumns = `repeat(${currentSize}, 1fr)`;
-    
-    // Style the grid as a matrix
-    setTimeout(() => {
-        styleMatrixBorders(coefficientGrid);
-    }, 0);
-}
 
-// Style matrix borders to look like bracket notation
-function styleMatrixBorders(grid) {
-    const inputs = grid.querySelectorAll('input');
-    inputs.forEach((input, index) => {
-        input.classList.remove('top-left', 'top-right', 'bottom-left', 'bottom-right');
-        
-        const row = Math.floor(index / currentSize);
-        const col = index % currentSize;
-        
-        if (row === 0 && col === 0) {
-            input.classList.add('top-left');
+    function equationPlaceholder(size, idx) {
+        const vars = ['x','y','z','d','e','f','g','h'];
+        let eq = '';
+        for (let j = 0; j < size; j++) {
+            eq += `${j > 0 ? ' + ' : ''}${Math.floor(Math.random() * 9 + 1)}${vars[j]}`;
         }
-        
-        if (row === 0 && col === currentSize - 1) {
-            input.classList.add('top-right');
-        }
-        
-        if (row === currentSize - 1 && col === 0) {
-            input.classList.add('bottom-left');
-        }
-        
-        if (row === currentSize - 1 && col === currentSize - 1) {
-            input.classList.add('bottom-right');
+        eq += ` = ${Math.floor(Math.random() * 21) - 10}`;
+        return eq;
+    }
+
+    randomBtn.addEventListener('click', () => {
+        const eqInputs = document.querySelectorAll('.equation-input');
+        for (let i = 0; i < eqInputs.length; i++) {
+            eqInputs[i].value = equationPlaceholder(matrixSize, i);
         }
     });
-}
 
-// Fill random values
-function fillRandomValues() {
-    for (let i = 0; i < currentSize; i++) {
-        for (let j = 0; j < currentSize; j++) {
-            coefficientInputs[i][j].value = Math.floor(Math.random() * 10) - 5;
+    clearBtn.addEventListener('click', () => {
+        document.querySelectorAll('.equation-input').forEach(input => input.value = '');
+    });
+
+    calculateBtn.addEventListener('click', () => {
+        const variableNames = ['x','y','z','d','e','f','g','h'].slice(0, matrixSize);
+        const eqInputs = Array.from(document.querySelectorAll('.equation-input'));
+        const eqStrings = eqInputs.map(input => input.value.trim());
+        if (eqStrings.some(s => !s)) {
+            displaySolution({
+                error: "Please enter all equations before calculating."
+            });
+            calculatorContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+            return;
         }
-    }
-}
-
-// Clear values
-function clearValues() {
-    for (let i = 0; i < currentSize; i++) {
-        for (let j = 0; j < currentSize; j++) {
-            coefficientInputs[i][j].value = 0;
+        let matrixA, matrixB;
+        try {
+            ({ matrixA, matrixB } = parseEquationsToMatrixVars(eqStrings, variableNames));
+        } catch (e) {
+            displaySolution({ error: e.message });
+            calculatorContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+            return;
         }
-    }
-}
 
-// Update operation sign based on selected method
-function updateOperationSign() {
-    const operationSign = document.querySelector('.operation-sign');
-    
-    switch (currentMethod) {
-        case 'determinant':
-            operationSign.textContent = '→';
-            break;
-        case 'inverse':
-            operationSign.innerHTML = '<sup>-1</sup>';
-            break;
-        case 'multiplication':
-            operationSign.textContent = '×';
-            break;
-        case 'addition':
-            operationSign.textContent = '+';
-            break;
-        default:
-            operationSign.textContent = '=';
-    }
-}
-
-// Show/hide second matrix for operations that need it
-function showSecondMatrix() {
-    // Implementation placeholder
-    console.log('Second matrix would be shown here');
-}
-
-function hideSecondMatrix() {
-    // Implementation placeholder
-    console.log('Second matrix would be hidden here');
-}
-
-// Perform matrix calculation
-function performCalculation() {
-    // Get matrix values
-    const matrix = getMatrixValues();
-    
-    // Update UI to show result
-    solutionMethodEl.textContent = currentMethod.charAt(0).toUpperCase() + currentMethod.slice(1);
-    calculatorContainer.style.display = 'none';
-    resultContainer.style.display = 'block';
-    
-    // Display calculation steps based on method
-    displayCalculationSteps(matrix);
-}
-
-// Get matrix values
-function getMatrixValues() {
-    const matrix = [];
-    
-    for (let i = 0; i < currentSize; i++) {
-        const row = [];
-        for (let j = 0; j < currentSize; j++) {
-            row.push(parseFloat(coefficientInputs[i][j].value) || 0);
+        let solution;
+        switch (selectedMethod) {
+            case 'determinant':
+                solution = solveDeterminant(matrixA);
+                break;
+            case 'cramers-rule':
+                solution = solveLinearSystemCramersRule(matrixA, matrixB, variableNames, eqStrings);
+                break;
+            case 'gauss-elimination':
+                solution = solveLinearSystemGaussElimination(matrixA, matrixB, variableNames, eqStrings);
+                break;
+            case 'gauss-jordan':
+                solution = solveLinearSystemGaussJordan(matrixA, matrixB, variableNames, eqStrings);
+                break;
+            case 'lu-decomposition':
+                solution = solveLinearSystemLUDecomposition(matrixA, matrixB, variableNames, eqStrings);
+                break;
+            default:
+                solution = { error: "Unknown method." };
         }
-        matrix.push(row);
-    }
-    
-    return matrix;
-}
+        displaySolution(solution, variableNames);
+        calculatorContainer.style.display = 'none';
+        resultContainer.style.display = 'block';
+    });
 
-// Display calculation steps
-function displayCalculationSteps(matrix) {
-    const matrixSetupEl = document.getElementById('matrix-setup');
-    const matrixCalculationEl = document.getElementById('matrix-calculation');
-    const finalSolutionEl = document.getElementById('final-solution');
-    
-    // Format matrix for MathJax
-    const matrixLatex = formatMatrixLatex(matrix);
-    
-    // Display matrix setup
-    matrixSetupEl.innerHTML = `\\[A = ${matrixLatex}\\]`;
-    
-    let result;
-    
-    // Calculate result based on method
-    switch (currentMethod) {
-        case 'determinant':
-            result = calculateDeterminant(matrix);
-            matrixCalculationEl.innerHTML = `\\[\\det(A) = ${result}\\]`;
-            break;
-        case 'inverse':
-            // Placeholder for inverse calculation
-            matrixCalculationEl.innerHTML = `\\[A^{-1} = \\text{(inverse calculation)}\\]`;
-            result = "Inverse calculation placeholder";
-            break;
-        case 'multiplication':
-            // Placeholder for multiplication
-            matrixCalculationEl.innerHTML = `\\[A \\times B = \\text{(multiplication result)}\\]`;
-            result = "Multiplication calculation placeholder";
-            break;
-        case 'addition':
-            // Placeholder for addition
-            matrixCalculationEl.innerHTML = `\\[A + B = \\text{(addition result)}\\]`;
-            result = "Addition calculation placeholder";
-            break;
-    }
-    
-    // Update final solution
-    finalSolutionEl.innerHTML = `<div class="final-answer">${result}</div>`;
-    
-    // Render MathJax
-    if (window.MathJax) {
-        MathJax.typeset();
-    }
-}
+    backBtn.addEventListener('click', () => {
+        calculatorContainer.style.display = 'block';
+        resultContainer.style.display = 'none';
+    });
 
-// Format matrix for LaTeX
-function formatMatrixLatex(matrix) {
-    const rows = matrix.map(row => row.join(' & ')).join(' \\\\ ');
-    return `\\begin{bmatrix} ${rows} \\end{bmatrix}`;
-}
-
-// Calculate determinant (simple implementation for 2x2 and 3x3)
-function calculateDeterminant(matrix) {
-    if (currentSize === 2) {
-        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
-    } else if (currentSize === 3) {
-        return matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[1][2] * matrix[2][1]) -
-               matrix[0][1] * (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0]) +
-               matrix[0][2] * (matrix[1][0] * matrix[2][1] - matrix[1][1] * matrix[2][0]);
-    } else {
-        // For larger matrices, we would use a more complex algorithm
-        return "Determinant calculation for 4x4+ matrices coming soon";
+    // --- Improved Equation Parsing ---
+    function parseEquationsToMatrixVars(equations, variableNames) {
+        const matrixA = [];
+        const matrixB = [];
+        for (let eq of equations) {
+            eq = eq.replace(/\s+/g, '');
+            const [lhs, rhs] = eq.split('=');
+            if (!lhs || !rhs) throw new Error('Invalid equation: ' + eq);
+            const row = new Array(variableNames.length).fill(0);
+            // Match all terms like "+2x", "-y", "4z", "+z", etc.
+            const termRegex = /([+-]?\d*(?:\.\d+)?)([a-z])/gi;
+            let match;
+            while ((match = termRegex.exec(lhs)) !== null) {
+                let [ , coeffStr, varName ] = match;
+                let idx = variableNames.indexOf(varName);
+                if (idx === -1) throw new Error('Unknown variable: ' + varName);
+                if (coeffStr === '' || coeffStr === '+') coeffStr = '1';
+                if (coeffStr === '-') coeffStr = '-1';
+                row[idx] += parseFloat(coeffStr);
+            }
+            matrixA.push(row);
+            matrixB.push(parseFloat(rhs));
+        }
+        return { matrixA, matrixB };
     }
-} 
+
+    // --- Cramer's Rule ---
+    function solveLinearSystemCramersRule(A, B, variableNames, eqStrings) {
+        let steps = [];
+        let n = A.length;
+        steps.push("$$\\text{System of equations:}$$");
+        eqStrings.forEach(eq => steps.push("$$" + eq.replace(/([a-z])/g, '\\$1') + "$$"));
+        steps.push("$$\\mathbf{A} = " + matrixToLatex(A) + "$$");
+        steps.push("$$\\vec{b} = " + matrixToLatex(B.map(b => [b])) + "$$");
+        let detA = determinant(A);
+        steps.push(`$$\\det(A) = ${detA}$$`);
+        if (Math.abs(detA) < 1e-12) {
+            steps.push('$$\\text{Determinant is zero. System has no unique solution.}$$');
+            return { steps, result: null };
+        }
+        let X = [];
+        for (let k = 0; k < n; k++) {
+            let Ak = A.map((row, i) => row.map((v, j) => (j === k ? B[i] : v)));
+            steps.push(`$$\\text{Replace column ${k + 1} (${variableNames[k]}) of } A \\text{ with } b:\\ A_{${variableNames[k]}} = ${matrixToLatex(Ak)}$$`);
+            let detAk = determinant(Ak);
+            steps.push(`$$\\det(A_{${variableNames[k]}}) = ${detAk}$$`);
+            X[k] = detAk / detA;
+            steps.push(
+                `$$${variableNames[k]} = \\frac{\\det(A_{${variableNames[k]}})}{\\det(A)} = \\frac{${detAk}}{${detA}} = ${X[k]}$$`
+            );
+        }
+        return { steps, result: X };
+    }
+
+    // --- Gauss Elimination ---
+    function solveLinearSystemGaussElimination(A, B, variableNames, eqStrings) {
+        let steps = [];
+        let n = A.length;
+        steps.push("$$\\text{System of equations:}$$");
+        eqStrings.forEach(eq => steps.push("$$" + eq.replace(/([a-z])/g, '\\$1') + "$$"));
+        let Ab = A.map((row, i) => [...row, B[i]]);
+        steps.push('$$\\text{Initial Augmented Matrix:}$$');
+        steps.push(matrixToLatex(Ab));
+        // Forward elimination
+        for (let i = 0; i < n; i++) {
+            // Partial pivoting
+            let maxRow = i;
+            for (let k = i + 1; k < n; k++) {
+                if (Math.abs(Ab[k][i]) > Math.abs(Ab[maxRow][i])) maxRow = k;
+            }
+            if (Math.abs(Ab[maxRow][i]) < 1e-12) {
+                steps.push('$$\\text{Zero pivot encountered, system has no unique solution.}$$');
+                return { steps, result: null };
+            }
+            if (maxRow !== i) {
+                [Ab[i], Ab[maxRow]] = [Ab[maxRow], Ab[i]];
+                steps.push(`$$\\text{Swap row } ${i + 1} \\text{ and } ${maxRow + 1}:$$`);
+                steps.push(matrixToLatex(Ab));
+            }
+            // Eliminate below
+            for (let k = i + 1; k < n; k++) {
+                let factor = Ab[k][i] / Ab[i][i];
+                steps.push(
+                    `$$R_{${k + 1}} = R_{${k + 1}} - (${factor.toFixed(3)})R_{${i + 1}}$$`
+                );
+                for (let j = i; j < n + 1; j++) {
+                    Ab[k][j] -= factor * Ab[i][j];
+                }
+                steps.push(matrixToLatex(Ab));
+            }
+        }
+        // Back substitution
+        let X = Array(n);
+        for (let i = n - 1; i >= 0; i--) {
+            let sum = Ab[i][n];
+            for (let j = i + 1; j < n; j++) {
+                sum -= Ab[i][j] * X[j];
+            }
+            if (Math.abs(Ab[i][i]) < 1e-12) {
+                steps.push('$$\\text{Zero pivot encountered during back substitution.}$$');
+                return { steps, result: null };
+            }
+            X[i] = sum / Ab[i][i];
+            steps.push(`$$${variableNames[i]} = ${X[i].toFixed(6)}$$`);
+        }
+        return { steps, result: X };
+    }
+
+    // --- Gauss-Jordan ---
+    function solveLinearSystemGaussJordan(A, B, variableNames, eqStrings) {
+        let steps = [];
+        let n = A.length;
+        steps.push("$$\\text{System of equations:}$$");
+        eqStrings.forEach(eq => steps.push("$$" + eq.replace(/([a-z])/g, '\\$1') + "$$"));
+        let Ab = A.map((row, i) => [...row, B[i]]);
+        steps.push('$$\\text{Initial Augmented Matrix:}$$');
+        steps.push(matrixToLatex(Ab));
+        for (let i = 0; i < n; i++) {
+            // Partial pivoting
+            let maxRow = i;
+            for (let k = i + 1; k < n; k++) {
+                if (Math.abs(Ab[k][i]) > Math.abs(Ab[maxRow][i])) maxRow = k;
+            }
+            if (Math.abs(Ab[maxRow][i]) < 1e-12) {
+                steps.push('$$\\text{Zero pivot encountered, system has no unique solution.}$$');
+                return { steps, result: null };
+            }
+            if (maxRow !== i) {
+                [Ab[i], Ab[maxRow]] = [Ab[maxRow], Ab[i]];
+                steps.push(`$$\\text{Swap row } ${i + 1} \\text{ and } ${maxRow + 1}:$$`);
+                steps.push(matrixToLatex(Ab));
+            }
+            // Make leading 1
+            let pivot = Ab[i][i];
+            for (let j = 0; j < n + 1; j++) {
+                Ab[i][j] /= pivot;
+            }
+            steps.push(`$$R_{${i + 1}} = \\frac{R_{${i + 1}}}{${pivot.toFixed(3)}}$$`);
+            steps.push(matrixToLatex(Ab));
+            // Eliminate others
+            for (let k = 0; k < n; k++) {
+                if (k === i) continue;
+                let factor = Ab[k][i];
+                for (let j = 0; j < n + 1; j++) {
+                    Ab[k][j] -= factor * Ab[i][j];
+                }
+                steps.push(`$$R_{${k + 1}} = R_{${k + 1}} - (${factor.toFixed(3)})R_{${i + 1}}$$`);
+                steps.push(matrixToLatex(Ab));
+            }
+        }
+        let X = Ab.map(row => row[n]);
+        for (let i = 0; i < n; i++) {
+            steps.push(`$$${variableNames[i]} = ${X[i].toFixed(6)}$$`);
+        }
+        return { steps, result: X };
+    }
+
+    // --- LU Decomposition (Doolittle, no pivoting for square and invertible A) ---
+    function solveLinearSystemLUDecomposition(A, B, variableNames, eqStrings) {
+        let steps = [];
+        let n = A.length;
+        steps.push("$$\\text{System of equations:}$$");
+        eqStrings.forEach(eq => steps.push("$$" + eq.replace(/([a-z])/g, '\\$1') + "$$"));
+        let L = Array.from({length: n}, () => Array(n).fill(0));
+        let U = Array.from({length: n}, () => Array(n).fill(0));
+        // Doolittle's method
+        for (let i = 0; i < n; i++) {
+            L[i][i] = 1;
+            for (let j = i; j < n; j++) {
+                let sum = 0;
+                for (let k = 0; k < i; k++) sum += L[i][k] * U[k][j];
+                U[i][j] = A[i][j] - sum;
+            }
+            for (let j = i + 1; j < n; j++) {
+                let sum = 0;
+                for (let k = 0; k < i; k++) sum += L[j][k] * U[k][i];
+                if (Math.abs(U[i][i]) < 1e-12) {
+                    steps.push('$$\\text{Zero pivot encountered, system has no unique solution.}$$');
+                    return { steps, result: null };
+                }
+                L[j][i] = (A[j][i] - sum) / U[i][i];
+            }
+        }
+        steps.push('$$L = ' + matrixToLatex(L) + '$$');
+        steps.push('$$U = ' + matrixToLatex(U) + '$$');
+        // Solve L.y = B (forward)
+        let y = Array(n).fill(0);
+        for (let i = 0; i < n; i++) {
+            y[i] = B[i];
+            for (let k = 0; k < i; k++) y[i] -= L[i][k] * y[k];
+            y[i] /= L[i][i];
+        }
+        steps.push('$$\\vec{y} = ' + matrixToLatex(y.map(v => [v])) + '$$');
+        // Solve U.x = y (backward)
+        let X = Array(n).fill(0);
+        for (let i = n - 1; i >= 0; i--) {
+            X[i] = y[i];
+            for (let k = i + 1; k < n; k++) X[i] -= U[i][k] * X[k];
+            if (Math.abs(U[i][i]) < 1e-12) {
+                steps.push('$$\\text{Zero pivot encountered during backward substitution.}$$');
+                return { steps, result: null };
+            }
+            X[i] /= U[i][i];
+        }
+        for (let i = 0; i < n; i++) {
+            steps.push(`$$${variableNames[i]} = ${X[i].toFixed(6)}$$`);
+        }
+        return { steps, result: X };
+    }
+
+    // --- Determinant (recursive Laplace) ---
+    function determinant(A) {
+        const n = A.length;
+        if (n === 1) return A[0][0];
+        if (n === 2) return A[0][0]*A[1][1] - A[0][1]*A[1][0];
+        let det = 0;
+        for (let j = 0; j < n; j++) {
+            let minor = A.slice(1).map(row => row.filter((_, k) => k !== j));
+            det += ((j % 2 === 0 ? 1 : -1) * A[0][j] * determinant(minor));
+        }
+        return det;
+    }
+
+    function matrixToLatex(matrix) {
+        if (!Array.isArray(matrix[0])) matrix = matrix.map(x => [x]);
+        let latex = "\\begin{pmatrix}";
+        latex += matrix.map(row => row.map(x => typeof x === 'number' ? Number(x).toFixed(3) : x).join(' & ')).join(" \\\\ ");
+        latex += "\\end{pmatrix}";
+        return `${latex}`;
+    }
+
+    function displaySolution(solution, variableNames) {
+        const stepsDiv = document.getElementById('matrix-setup');
+        stepsDiv.innerHTML = '';
+        if (solution.error) {
+            stepsDiv.innerHTML = `<div class="math-display" style="color:red;">${solution.error}</div>`;
+        } else if (solution.steps && Array.isArray(solution.steps)) {
+            solution.steps.forEach(latex => {
+                const p = document.createElement('div');
+                p.className = 'math-display';
+                p.innerHTML = latex;
+                stepsDiv.appendChild(p);
+            });
+        }
+        const finalDiv = document.getElementById('final-solution');
+        finalDiv.innerHTML = '';
+        if (solution.result !== null && solution.result !== undefined) {
+            if (Array.isArray(solution.result)) {
+                finalDiv.innerHTML = solution.result.map((val, idx) =>
+                    `<div class="variable-solution">${variableNames[idx]} = <span class="variable-value">${val.toFixed(6)}</span></div>`
+                ).join('');
+            } else {
+                finalDiv.innerHTML = `<div class="variable-solution"><span class="variable-name">Result</span> = <span class="variable-value">${solution.result}</span></div>`;
+            }
+        } else if (!solution.error) {
+            finalDiv.innerHTML = `<div class="variable-solution">No solution.</div>`;
+        }
+        if (window.MathJax) window.MathJax.typeset();
+    }
+
+    // UI setup on load
+    createEquationFields();
+}

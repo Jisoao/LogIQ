@@ -34,11 +34,13 @@
 
         <main class="container">
             <div class="page-header">
-                    <h1>Matrix Calculator</h1>
-                    <p>Perform matrix operations and calculations with this powerful calculator</p>
+                <h1 class="section-title">Matrix Calculator</h1>
+                <p>Perform matrix operations and calculations with this powerful calculator</p>
             </div>
 
             <div class="calculator-container">
+                <p class="section-description">Solve systems of linear equations by entering each equation below. Use variables x, y, z, d, etc.<br><b>Example:</b> <code>2x - 3y + 4z = 8</code></p>
+
                 <div class="method-selector">
                     <h2>Select Operation</h2>
                     <div class="method-options">
@@ -46,57 +48,53 @@
                             <i class="fas fa-table-cells"></i>
                             <span>Determinant</span>
                         </div>
-                        <div class="method-option" data-method="inverse">
-                            <i class="fas fa-sync-alt"></i>
-                            <span>Matrix Inverse</span>
+                        <div class="method-option" data-method="cramers-rule">
+                            <i class="fas fa-equals"></i>
+                            <span>Cramer's Rule</span>
                         </div>
-                        <div class="method-option" data-method="multiplication">
-                            <i class="fas fa-times"></i>
-                            <span>Matrix Multiplication</span>
+                        <div class="method-option" data-method="gauss-elimination">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>Gauss Elimination</span>
                         </div>
-                        <div class="method-option" data-method="addition">
-                            <i class="fas fa-plus"></i>
-                            <span>Matrix Addition</span>
+                        <div class="method-option" data-method="gauss-jordan">
+                            <i class="fas fa-arrow-right-arrow-left"></i>
+                            <span>Gauss-Jordan</span>
+                        </div>
+                        <div class="method-option" data-method="lu-decomposition">
+                            <i class="fas fa-layer-group"></i>
+                            <span>LU Decomposition</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="matrix-size-selector">
-                    <h2>Matrix Size</h2>
+                    <h2>Number of Variables</h2>
                     <div class="size-options">
                         <label class="size-option active">
                             <input type="radio" name="matrix-size" value="2" checked>
-                            <span>2 × 2</span>
+                            <span>2</span>
                         </label>
                         <label class="size-option">
                             <input type="radio" name="matrix-size" value="3">
-                            <span>3 × 3</span>
+                            <span>3</span>
                         </label>
                         <label class="size-option">
                             <input type="radio" name="matrix-size" value="4">
-                            <span>4 × 4</span>
+                            <span>4</span>
                         </label>
                     </div>
                 </div>
 
-                <div class="matrix-input-container">
-                    <h2>Enter Matrix Values</h2>
-                    <div class="matrix-input">
-                        <div class="coefficient-matrix">
-                            <div class="matrix-label">Matrix A</div>
-                            <div class="matrix-grid" id="coefficient-grid"></div>
-                        </div>
-                        <div class="operation-sign">=</div>
-                        <div class="result-matrix">
-                            <div class="matrix-label">Result</div>
-                            <div class="matrix-grid" id="result-grid"></div>
-                        </div>
-                    </div>
-                    <div class="matrix-actions">
-                        <button class="btn btn-accent" id="random-values">Random Values</button>
-                        <button class="btn" id="clear-values">Clear</button>
-                        <button class="btn" id="calculate-btn">Calculate</button>
-                    </div>
+                <!-- Equation Input Section -->
+                <div class="equation-input-container">
+                    <h2>Enter Equations</h2>
+                    <div id="equation-fields"></div>
+                </div>
+
+                <div class="matrix-actions" style="margin-top: 24px;">
+                    <button class="btn btn-accent" id="random-values">Random Example</button>
+                    <button class="btn" id="clear-values">Clear</button>
+                    <button class="btn" id="calculate-btn">Calculate</button>
                 </div>
             </div>
 
@@ -106,27 +104,15 @@
                     <div class="method-name">Result using <span id="solution-method">Determinant</span></div>
                     <div class="solution-steps">
                         <div class="step">
-                            <div class="step-title">Step 1: Matrix Setup</div>
+                            <div class="step-title">Step-by-step Solution</div>
                             <div class="step-content">
-                                <div class="math-display" id="matrix-setup">
-                                    <!-- MathJax will render here -->
-                                </div>
+                                <div class="math-display" id="matrix-setup"></div>
                             </div>
                         </div>
                         <div class="step">
-                            <div class="step-title">Step 2: Calculation</div>
+                            <div class="step-title">Final Result</div>
                             <div class="step-content">
-                                <div class="math-display" id="matrix-calculation">
-                                    <!-- MathJax will render here -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <div class="step-title">Step 3: Final Result</div>
-                            <div class="step-content">
-                                <div class="solution-result" id="final-solution">
-                                    <!-- Final solution will be shown here -->
-                                </div>
+                                <div class="solution-result" id="final-solution"></div>
                             </div>
                         </div>
                     </div>
