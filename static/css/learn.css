@@ -1,6 +1,6 @@
 .container {
     padding: 1rem;
-    max-width: 1000px;
+    max-width: 1400px;
     margin: 0 auto;
     padding-bottom: 5rem;
 }
@@ -20,10 +20,14 @@
 
 .video-section {
     margin-bottom: 2.5rem;
+    margin-top: 2.5rem;
+    text-align: center;
 }
 
 .video-container {
-    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    display: block;
     background-color: var(--card);
     border-radius: var(--radius);
     overflow: hidden;
@@ -195,7 +199,7 @@
     gap: 20px;
     padding: 20px;
     max-width: 800px;
-    margin: 0 auto;
+    margin: 30px auto;
 }
 
 .lesson-button {
@@ -234,5 +238,337 @@
 
 .lesson-content-detail {
     display: none;
-} 
+}
+
+.detailed-lesson-content {
+    margin-top: 2rem;
+}
+
+.lesson-section-detail {
+    background-color: var(--card);
+    border-radius: var(--radius);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 50px;
+}
+
+.lesson-section-detail h2, .lesson-section-detail h3, .lesson-section-detail h4 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.lesson-section-detail p, .lesson-section-detail ul, .lesson-section-detail ol {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: var(--foreground);
+}
+
+.lesson-section-detail ul, .lesson-section-detail ol {
+    padding-left: 20px;
+}
+
+.lesson-section-detail li {
+    margin-bottom: 8px;
+}
+
+.lesson-section-detail hr {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid var(--border);
+}
+
+/* Style for MathJax equations */
+.lesson-section-detail .MathJax_Display {
+    margin: 15px 0 !important;
+}
+
+.lesson-section-detail .MathJax {
+     font-size: 1.1em !important; /* Adjust font size for equations if needed */
+}
+
+#cramers-rule-content .lesson-list a {
+    text-decoration: none;
+    color: var(--primary);
+    transition: color 0.2s ease;
+}
+
+#cramers-rule-content .lesson-list a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+#cramers-rule-content .lesson-list a.active {
+    font-weight: bold;
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+#cramers-rule-content .lesson-list p {
+    margin-bottom: 10px; /* Add some space between lesson items */
+}
+
+/* Styling for the lesson list within the Cramer's Rule content */
+#cramers-rule-content .lesson-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+    padding: 0;
+    list-style: none;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styling for the lesson list within the Gauss Elimination content - added for specificity */
+#gauss-elimination-content .lesson-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+    padding: 0;
+    list-style: none;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styling for the lesson list within the Gauss-Jordan Elimination content - ensuring centering */
+#gauss-jordan-content .lesson-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+    padding: 0;
+    list-style: none;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styling for buttons within lesson lists */
+#cramers-rule-content .lesson-list button,
+#gauss-elimination-content .lesson-list button,
+#gauss-jordan-content .lesson-list button,
+#lu-decomposition-content .lesson-list button {
+    background-color: var(--card);
+    border-radius: var(--radius);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Consistent shadow */
+    padding: 1.5rem; /* Consistent padding */
+    margin-bottom: 0; /* Gap handles spacing */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.2s ease; /* Include background-color in transition */
+    cursor: pointer;
+    text-align: left; /* Ensure text is left-aligned */
+    flex-shrink: 0; /* Prevent items from shrinking excessively */
+    border: none; /* Remove default button border */
+    font: inherit; /* Inherit font styles */
+    color: var(--foreground); /* Default text color */
+}
+
+#cramers-rule-content .lesson-list button:hover,
+#gauss-elimination-content .lesson-list button:hover,
+#gauss-jordan-content .lesson-list button:hover,
+#lu-decomposition-content .lesson-list button:hover {
+    transform: translateY(-3px); /* Consistent hover effect */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15); /* Consistent hover shadow */
+    background-color: var(--muted); /* Subtle background change on hover */
+}
+
+/* Active state for the button */
+#cramers-rule-content .lesson-list button.active,
+#gauss-elimination-content .lesson-list button.active,
+#gauss-jordan-content .lesson-list button.active,
+#lu-decomposition-content .lesson-list button.active {
+    border-left: 4px solid var(--primary); /* Consistent active border */
+    padding-left: calc(1.5rem - 4px); /* Adjust padding to keep visual alignment */
+    background-color: var(--muted); /* Subtle background change for active state */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow for active state */
+    color: var(--primary); /* Active text color */
+    font-weight: bold; /* Bold text for active state */
+}
+
+/* Ensure active style is applied to the first button in LU Decomposition list if it's active */
+#lu-decomposition-content .lesson-list button.active:first-child {
+    border-left: 4px solid var(--primary);
+    padding-left: calc(1.5rem - 4px);
+    background-color: var(--muted);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    color: var(--primary);
+    font-weight: bold;
+}
+
+/* Style for the strong tag inside the button */
+#cramers-rule-content .lesson-list button strong,
+#gauss-elimination-content .lesson-list button strong,
+#gauss-jordan-content .lesson-list button strong,
+#lu-decomposition-content .lesson-list button strong {
+    font-weight: bold; /* Ensure strong tag is bold */
+    margin-right: 5px; /* Add a little space after the bold prefix */
+}
+
+/* Remove old p and a styles */
+#cramers-rule-content .lesson-list p,
+#cramers-rule-content .lesson-list a,
+#cramers-rule-content .lesson-list a:hover,
+#cramers-rule-content .lesson-list a.active,
+#cramers-rule-content .lesson-list p.active,
+#cramers-rule-content .lesson-list p button,
+#cramers-rule-content .lesson-list p button:not(.active),
+#cramers-rule-content .lesson-list p button.active {
+    /* These rules are now applied to the button directly or are no longer needed */
+    /* They are included here to explicitly remove or override if necessary, depending on specificity */
+    /* In this case, setting their display to none or similar might be too aggressive */
+    /* It's better to rely on the new button styles having higher specificity */
+}
+
+.cramers-overview {
+    margin-top: 2rem; /* Add space above the course objective */
+    padding: 1.5rem; /* Add some padding */
+    background-color: var(--card); /* Give it a card-like background */
+    border-radius: var(--radius); /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+}
+
+.cramers-overview strong {
+    color: var(--primary); /* Emphasize the 'Course Objective' title */
+    font-size: 1.2em; /* Make the title slightly larger */
+    display: block; /* Put the title on its own line */
+    margin-bottom: 10px; /* Space below the title */
+}
+
+.cramers-overview-content {
+    margin-top: 15px; /* Add space above the overview content */
+    padding: 15px; /* Add some padding around the overview content */
+    background-color: var(--secondary); /* Use a different background color for emphasis */
+    border-left: 4px solid var(--primary); /* Add a left border for visual separation */
+    border-radius: var(--radius); /* Match parent border radius */
+}
+
+.cramers-overview-content p,
+.cramers-overview-content ul {
+    margin-bottom: 10px; /* Space below paragraphs and lists within overview */
+}
+
+.cramers-overview-content ul,
+.cramers-overview-content ol {
+    padding-left: 30px; /* Increase padding for list items */
+}
+
+.cramers-overview-content li {
+    margin-bottom: 5px; /* Space between list items */
+}
+
+/* Adjust styling for the summary heading within Lesson 3 */
+#lesson-3-details h2:last-of-type {
+    margin-top: 20px; /* Add space above the summary heading */
+}
+
+#lesson-3-details ul {
+    margin-top: 10px; /* Add space above the summary list */
+}
+
+/* Remove old styles for summary details div if they exist */
+#summary-details {
+    /* This div is removed, so these styles are no longer necessary, */
+    /* but including to be explicit in case they were inherited or misapplied */
+    display: none; /* Ensure it's hidden if somehow still present */
+}
+
+
+/* Styling for the lesson list container to center buttons */
+#cramers-rule-content .lesson-list,
+#gauss-elimination-content .lesson-list,
+#gauss-jordan-content .lesson-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Styling for the next lesson button */
+.next-lesson-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: #157575;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    z-index: 10;
+}
+
+.next-lesson-button:hover {
+    background-color: #126262;
+    color: white;
+}
+
+.next-lesson-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Styling for the previous lesson button */
+.previous-lesson-button {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background-color: #157575;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    z-index: 10;
+}
+
+.previous-lesson-button:hover {
+    background-color: #126262;
+    color: white;
+}
+
+/* Styling for the complete lesson button */
+.complete-lesson-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: #157575; /* Match other button styles */
+    color: white; /* Match other button styles */
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    z-index: 10;
+}
+
+.complete-lesson-button:hover {
+    background-color: #126262;
+    color: white;
+}
+
+/* Add a separate rule for LU Decomposition lesson list */
+#lu-decomposition-content .lesson-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+    padding: 0;
+    list-style: none;
+    justify-content: center;
+}
 
