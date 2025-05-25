@@ -4,6 +4,9 @@
     color: var(--muted-foreground);
     margin-bottom: 2rem;
     max-width: 600px;
+    padding: 0.75rem 1.5rem;
+    line-height: 1.6;
+    font-size: 1.05rem;
 }
 
 .calculator-container {
@@ -373,3 +376,10 @@ input.matrix-input:focus {
         width: 100%;
     }
 }
+
+/* Add styling for the Matrix Calculator title */
+.main-content .section-title {
+    color: white;
+}
+
+/* Add other layout fixes here if needed */
