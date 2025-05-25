@@ -251,10 +251,14 @@
 
 .lesson-content-detail {
     display: none;
+    height: calc(100vh - 64px - 70px); /* Subtract navbar and bottom nav height */
+    overflow-y: auto;
+    padding-bottom: 100px; /* Add padding for bottom nav */
 }
 
 .detailed-lesson-content {
     margin-top: 2rem;
+    padding: 0 20px;
 }
 
 .lesson-section-detail {
@@ -583,5 +587,59 @@
     padding: 0;
     list-style: none;
     justify-content: center;
+}
+
+/* Login recommendation popup */
+.login-recommendation {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #157575;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+.login-recommendation p {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.login-recommendation .btn {
+    background-color: white;
+    color: #157575;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.login-recommendation .btn:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.login-recommendation .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.login-recommendation .close-btn:hover {
+    opacity: 0.8;
 }
 
