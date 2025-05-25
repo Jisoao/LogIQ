@@ -1,17 +1,21 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-analytics.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
 import { firebaseConfig } from './config.js';
 
 // Initialize Firebase
 let app;
 let auth;
 let analytics;
+let db;
 
 try {
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   analytics = getAnalytics(app);
+  db = getFirestore(app);
+  console.log("Firebase initialized successfully");
 } catch (error) {
   console.error("Firebase initialization error:", error);
 }
@@ -36,6 +40,37 @@ function clearMessages() {
   if (el) el.textContent = '';
   el = document.getElementById('loginSuccess');
   if (el) el.textContent = '';
+}
+
+// Function to create/update user document
+async function createUserDocument(user) {
+  try {
+    console.log("Creating/updating user document for:", user.uid);
+    
+    // Check if document exists first
+    const userDocRef = doc(db, "users", user.uid);
+    const userDocSnap = await getDoc(userDocRef);
+    
+    if (!userDocSnap.exists()) {
+      // Only create new document if it doesn't exist
+      const userDoc = {
+        name: user.email.split('@')[0],
+        progress: {
+          "cramers-rule": 0,
+          "gauss-elimination": 0,
+          "gauss-jordan": 0,
+          "lu-decomposition": 0
+        }
+      };
+      
+      await setDoc(userDocRef, userDoc);
+      console.log("New user document created successfully");
+    } else {
+      console.log("User document already exists, skipping creation");
+    }
+  } catch (error) {
+    console.error("Error creating/updating user document:", error);
+  }
 }
 
 // Registration form handler
@@ -66,19 +101,30 @@ document.getElementById('registerForm')?.addEventListener('submit', function(eve
     return;
   }
 
+  console.log("Attempting to create user account...");
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
+      console.log("User account created successfully:", userCredential.user.uid);
+      return createUserDocument(userCredential.user);
+    })
+    .then(() => {
       successEl.textContent = "Registration successful! Please log in.";
       // Store user info in sessionStorage
       const username = email.split('@')[0];
       sessionStorage.setItem('userLoggedIn', 'true');
       sessionStorage.setItem('username', username);
-      setTimeout(() => {
-        document.getElementById('registerForm').style.display = 'none';
-        document.getElementById('loginForm').style.display = 'block';
-      }, 1200);
+      
+      const registerForm = document.getElementById('registerForm');
+      const loginForm = document.getElementById('loginForm');
+      if (registerForm && loginForm) {
+        setTimeout(() => {
+          registerForm.style.display = 'none';
+          loginForm.style.display = 'block';
+        }, 1200);
+      }
     })
     .catch((error) => {
+      console.error("Error during registration:", error);
       switch (error.code) {
         case 'auth/email-already-in-use':
           errorEl.textContent = "This email is already registered. Please log in instead.";
@@ -110,6 +156,11 @@ document.getElementById('loginForm')?.addEventListener('submit', function(event)
 
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
+      console.log("User logged in successfully:", userCredential.user.uid);
+      // Create/update user document
+      return createUserDocument(userCredential.user);
+    })
+    .then(() => {
       // Store user info in sessionStorage
       const username = email.split('@')[0];
       sessionStorage.setItem('userLoggedIn', 'true');
@@ -121,6 +172,7 @@ document.getElementById('loginForm')?.addEventListener('submit', function(event)
       }, 1000);
     })
     .catch((error) => {
+      console.error("Error during login:", error);
       switch (error.code) {
         case 'auth/user-not-found':
           errorEl.textContent = "No account found with this email. Please sign up first.";
@@ -163,6 +215,9 @@ document.querySelectorAll('#logoutBtn').forEach(button => {
 onAuthStateChanged(auth, (user) => {
   if (user) {
     console.log('User is signed in:', user.email);
+    // Create/update user document
+    createUserDocument(user);
+    
     // Store user info in sessionStorage
     const username = user.email.split('@')[0];
     sessionStorage.setItem('userLoggedIn', 'true');
@@ -180,10 +235,13 @@ onAuthStateChanged(auth, (user) => {
     }
     
     // Update login/logout buttons
-    document.querySelectorAll('#loginBtn').forEach(el => {
+    const loginButtons = document.querySelectorAll('#loginBtn');
+    const logoutButtons = document.querySelectorAll('#logoutBtn');
+    
+    loginButtons.forEach(el => {
       if (el) el.style.display = 'none';
     });
-    document.querySelectorAll('#logoutBtn').forEach(el => {
+    logoutButtons.forEach(el => {
       if (el) el.style.display = 'block';
     });
   } else {
@@ -193,13 +251,17 @@ onAuthStateChanged(auth, (user) => {
     sessionStorage.removeItem('username');
     
     // Update UI for logged out state
-    document.querySelectorAll('#username').forEach(el => {
+    const usernameElements = document.querySelectorAll('#username');
+    const loginButtons = document.querySelectorAll('#loginBtn');
+    const logoutButtons = document.querySelectorAll('#logoutBtn');
+    
+    usernameElements.forEach(el => {
       if (el) el.textContent = 'Guest';
     });
-    document.querySelectorAll('#loginBtn').forEach(el => {
+    loginButtons.forEach(el => {
       if (el) el.style.display = 'block';
     });
-    document.querySelectorAll('#logoutBtn').forEach(el => {
+    logoutButtons.forEach(el => {
       if (el) el.style.display = 'none';
     });
   }
@@ -207,12 +269,20 @@ onAuthStateChanged(auth, (user) => {
 
 // On page load, show the correct form based on the hash
 window.addEventListener('load', () => {
-  if (window.location.hash === '#signup') {
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('registerForm').style.display = 'block';
-  } else {
-    document.getElementById('loginForm').style.display = 'block';
-    document.getElementById('registerForm').style.display = 'none';
+  // Only try to access form elements if we're on the auth page
+  if (window.location.pathname.includes('auth')) {
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    
+    if (loginForm && registerForm) {
+      if (window.location.hash === '#signup') {
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+      } else {
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+      }
+    }
   }
 });
 

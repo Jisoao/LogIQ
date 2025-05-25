@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/progress.js') }}"></script>
 </head>
 <body>
     <!-- Main Content -->
@@ -40,7 +41,7 @@
 
             <h2 class="section-title">Learning Modules</h2>
             <div class="method-grid">
-                <div class="method-card" data-progress="25">
+                <div class="method-card" data-method="cramers-rule" data-progress="0">
                     <div class="method-icon">
                         <i class="fas fa-table-cells"></i>
                     </div>
@@ -49,7 +50,7 @@
                     <a href="/learn/cramers-rule" class="start-learning-btn">Start Learning</a>
                 </div>
 
-                <div class="method-card" data-progress="0">
+                <div class="method-card" data-method="gauss-elimination" data-progress="0">
                     <div class="method-icon">
                         <i class="fas fa-arrow-right"></i>
                     </div>
@@ -58,7 +59,7 @@
                     <a href="/learn/gauss-elimination" class="start-learning-btn">Start Learning</a>
                 </div>
 
-                <div class="method-card" data-progress="0">
+                <div class="method-card" data-method="gauss-jordan" data-progress="0">
                     <div class="method-icon">
                         <i class="fas fa-equals"></i>
                     </div>
@@ -67,7 +68,7 @@
                     <a href="/learn/gauss-jordan" class="start-learning-btn">Start Learning</a>
                 </div>
 
-                <div class="method-card" data-progress="0">
+                <div class="method-card" data-method="lu-decomposition" data-progress="0">
                     <div class="method-icon">
                         <i class="fas fa-layer-group"></i>
                     </div>
@@ -84,9 +85,9 @@
                         <div class="progress-ring">
                             <svg viewBox="0 0 36 36">
                                 <circle class="progress-bg" cx="18" cy="18" r="15.9155"></circle>
-                                <circle class="progress-indicator" cx="18" cy="18" r="15.9155" stroke-dasharray="100" stroke-dashoffset="75" style="stroke-dashoffset: 75"></circle>
+                                <circle class="progress-indicator" cx="18" cy="18" r="15.9155" stroke-dasharray="100" stroke-dashoffset="100"></circle>
                             </svg>
-                            <div class="percentage">25%</div>
+                            <div class="percentage">0%</div>
                         </div>
                         <h3>Cramer's Rule</h3>
                     </div>
@@ -95,7 +96,7 @@
                         <div class="progress-ring">
                             <svg viewBox="0 0 36 36">
                                 <circle class="progress-bg" cx="18" cy="18" r="15.9155"></circle>
-                                <circle class="progress-indicator" cx="18" cy="18" r="15.9155" stroke-dasharray="100" stroke-dashoffset="100" style="stroke-dashoffset: 100"></circle>
+                                <circle class="progress-indicator" cx="18" cy="18" r="15.9155" stroke-dasharray="100" stroke-dashoffset="100"></circle>
                             </svg>
                             <div class="percentage">0%</div>
                         </div>
@@ -106,7 +107,7 @@
                         <div class="progress-ring">
                             <svg viewBox="0 0 36 36">
                                 <circle class="progress-bg" cx="18" cy="18" r="15.9155"></circle>
-                                <circle class="progress-indicator" cx="18" cy="18" r="15.9155" stroke-dasharray="100" stroke-dashoffset="100" style="stroke-dashoffset: 100"></circle>
+                                <circle class="progress-indicator" cx="18" cy="18" r="15.9155" stroke-dasharray="100" stroke-dashoffset="100"></circle>
                             </svg>
                             <div class="percentage">0%</div>
                         </div>
@@ -117,7 +118,7 @@
                         <div class="progress-ring">
                             <svg viewBox="0 0 36 36">
                                 <circle class="progress-bg" cx="18" cy="18" r="15.9155"></circle>
-                                <circle class="progress-indicator" cx="18" cy="18" r="15.9155" stroke-dasharray="100" stroke-dashoffset="100" style="stroke-dashoffset: 100"></circle>
+                                <circle class="progress-indicator" cx="18" cy="18" r="15.9155" stroke-dasharray="100" stroke-dashoffset="100"></circle>
                             </svg>
                             <div class="percentage">0%</div>
                         </div>
