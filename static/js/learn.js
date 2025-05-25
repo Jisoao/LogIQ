@@ -54,6 +54,14 @@ function showLessonContent(method, lessonNumber) {
         lessonButtons.forEach((button, index) => {
             if (index === lessonNumber) {
                 button.classList.add('active');
+                // Update video if URL is provided
+                const videoUrl = button.getAttribute('data-video-url');
+                if (videoUrl) {
+                    const videoFrame = document.getElementById('lesson-video');
+                    if (videoFrame) {
+                        videoFrame.src = videoUrl;
+                    }
+                }
             } else {
                 button.classList.remove('active');
             }
@@ -175,85 +183,35 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.lesson-list button').forEach(button => {
         button.addEventListener('click', () => {
             const method = button.closest('.lesson-content-detail').id.replace('-content', '');
-            const lessonNumber = Array.from(button.parentElement.children).indexOf(button);
+            const targetId = button.getAttribute('data-target-id');
+            const videoUrl = button.getAttribute('data-video-url');
             
-            console.log('Lesson button clicked:', method, 'lesson:', lessonNumber);
-            
-            // Show the selected lesson content
-            showLessonContent(method, lessonNumber);
-            
-            // Only update progress if user is logged in
-            const user = auth.currentUser;
-            if (!user) {
-                showLoginRecommendation();
-            } else {
-                // Update progress based on lesson number
-                let progress = 0;
-                switch(method) {
-                    case 'cramers-rule':
-                        switch(lessonNumber) {
-                            case 0: // Lesson 1
-                                progress = 0;
-                                break;
-                            case 1: // Lesson 2
-                                progress = 25;
-                                break;
-                            case 2: // Lesson 3
-                                progress = 50;
-                                break;
-                            case 3: // Practice Problems
-                                progress = 75;
-                                break;
-                            default:
-                                progress = 0;
-                        }
-                        break;
-                    case 'lu-decomposition':
-                        switch(lessonNumber) {
-                            case 0: // Lesson 1
-                                progress = 0;
-                                break;
-                            case 1: // Lesson 2
-                                progress = 33;
-                                break;
-                            case 2: // Lesson 3
-                                progress = 66;
-                                break;
-                            default:
-                                progress = 0;
-                        }
-                        break;
-                    default:
-                        progress = 0;
+            // Update video if URL is provided
+            if (videoUrl) {
+                const videoFrame = document.getElementById('lesson-video');
+                if (videoFrame) {
+                    videoFrame.src = videoUrl;
                 }
-                
-                // Update progress in Firestore
-                const userRef = doc(db, "users", user.uid);
-                getDoc(userRef).then((doc) => {
-                    if (doc.exists()) {
-                        const userData = doc.data();
-                        const currentProgress = userData.progress || {};
-                        currentProgress[method] = progress;
-                        
-                        // Update the document
-                        updateDoc(userRef, {
-                            progress: currentProgress
-                        }).then(() => {
-                            console.log(`Progress updated for ${method}: ${progress}%`);
-                        }).catch((error) => {
-                            console.error("Error updating progress:", error);
-                        });
-                    }
-                });
             }
+
+            // Show the selected lesson content
+            document.querySelectorAll('.lesson-section-detail').forEach(section => {
+                section.style.display = section.id === targetId ? 'block' : 'none';
+            });
+
+            // Update active button
+            button.closest('.lesson-list').querySelectorAll('button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            button.classList.add('active');
 
             // Scroll to top of the lesson content
             const container = document.querySelector('.container');
             if (container) {
                 container.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
-            });
         });
+    });
 
     // Add event listeners for method cards
     document.querySelectorAll('.method-card').forEach(card => {
@@ -295,6 +253,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 lessonButtons.forEach((btn, index) => {
                     if (index === nextIndex) {
                         btn.classList.add('active');
+                        // Update video if URL is provided
+                        const videoUrl = btn.getAttribute('data-video-url');
+                        if (videoUrl) {
+                            const videoFrame = document.getElementById('lesson-video');
+                            if (videoFrame) {
+                                videoFrame.src = videoUrl;
+                            }
+                        }
                     } else {
                         btn.classList.remove('active');
                     }
@@ -305,9 +271,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (container) {
                     container.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
-                 }
-             });
-         });
+            }
+        });
+    });
 
     // Add event listeners for previous lesson buttons
     document.querySelectorAll('.previous-lesson-button').forEach(button => {
@@ -330,6 +296,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 lessonButtons.forEach((btn, index) => {
                     if (index === prevIndex) {
                         btn.classList.add('active');
+                        // Update video if URL is provided
+                        const videoUrl = btn.getAttribute('data-video-url');
+                        if (videoUrl) {
+                            const videoFrame = document.getElementById('lesson-video');
+                            if (videoFrame) {
+                                videoFrame.src = videoUrl;
+                            }
+                        }
                     } else {
                         btn.classList.remove('active');
                     }
