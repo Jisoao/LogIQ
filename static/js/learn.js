@@ -30,50 +30,32 @@ function getLessonNumber(method, progress) {
 // Function to show lesson content
 function showLessonContent(method, lessonNumber) {
     console.log('Showing lesson content for:', method, 'lesson:', lessonNumber);
-    
+
     // Hide all lesson content first
     document.querySelectorAll('.lesson-content-detail').forEach(content => {
         content.style.display = 'none';
     });
 
-    // Show the selected lesson content
+    // Show the selected lesson content container
     const lessonContent = document.getElementById(`${method}-content`);
     if (lessonContent) {
         lessonContent.style.display = 'block';
-        
-        // For Gauss Elimination and Gauss-Jordan, hide the detailed content initially
-        if (method === 'gauss-elimination' || method === 'gauss-jordan') {
-            const detailedContent = lessonContent.querySelector('.detailed-lesson-content');
-            if (detailedContent) {
-                detailedContent.style.display = 'none';
-            }
-        } else {
-            // For other methods, show the appropriate detailed section
-            const detailedSections = lessonContent.querySelectorAll('.detailed-lesson-content > div');
-            detailedSections.forEach((section, index) => {
-                if (section) {
-                    section.style.display = index === lessonNumber ? 'block' : 'none';
-                }
-            });
+
+        // Hide the detailed lesson content initially for all methods
+        const detailedContent = lessonContent.querySelector('.detailed-lesson-content');
+        if (detailedContent) {
+            detailedContent.style.display = 'none';
         }
 
-        // Update active button in lesson list
+        // The logic to show the specific lesson section when a button is clicked is in the '.lesson-list button' event listener.
+        // We don't show any specific section here initially.
+
+        // Update active button in lesson list (optional, you might want to remove the active class initially)
         const lessonButtons = lessonContent.querySelectorAll('.lesson-list button');
-        lessonButtons.forEach((button, index) => {
-            if (index === lessonNumber) {
-                button.classList.add('active');
-                // Update video if URL is provided
-                const videoUrl = button.getAttribute('data-video-url');
-                if (videoUrl) {
-                    const videoFrame = document.getElementById('lesson-video');
-                    if (videoFrame) {
-                        videoFrame.src = videoUrl;
-                    }
-                }
-            } else {
-                button.classList.remove('active');
-            }
+        lessonButtons.forEach(button => {
+             button.classList.remove('active');
         });
+
     } else {
         console.error('Lesson content not found for method:', method);
     }

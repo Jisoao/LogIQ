@@ -251,8 +251,8 @@
 
 .lesson-content-detail {
     display: none;
-    height: calc(100vh - 64px - 70px); /* Subtract navbar and bottom nav height */
-    overflow-y: auto;
+    /* height: calc(100vh - 64px - 70px); /* Subtract navbar and bottom nav height */ */
+    /* overflow-y: auto; */
     padding-bottom: 100px; /* Add padding for bottom nav */
 }
 
