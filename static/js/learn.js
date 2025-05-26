@@ -190,10 +190,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (detailedContent) {
                 // For Gauss Elimination and Gauss-Jordan, show the detailed content
-                if (method === 'gauss-elimination' || method === 'gauss-jordan') {
+                // This condition is no longer needed as showLessonContent hides for all initially.
+                // if (method === 'gauss-elimination' || method === 'gauss-jordan') {
                     detailedContent.style.display = 'block';
-                }
-                
+                // }
+
                 // Show the selected section and hide others
                 document.querySelectorAll('.lesson-section-detail').forEach(section => {
                     section.style.display = section.id === targetId ? 'block' : 'none';
