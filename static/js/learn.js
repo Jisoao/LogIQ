@@ -41,13 +41,21 @@ function showLessonContent(method, lessonNumber) {
     if (lessonContent) {
         lessonContent.style.display = 'block';
         
-        // Show the appropriate detailed section
-        const detailedSections = lessonContent.querySelectorAll('.detailed-lesson-content > div');
-        detailedSections.forEach((section, index) => {
-            if (section) {
-                section.style.display = index === lessonNumber ? 'block' : 'none';
+        // For Gauss Elimination and Gauss-Jordan, hide the detailed content initially
+        if (method === 'gauss-elimination' || method === 'gauss-jordan') {
+            const detailedContent = lessonContent.querySelector('.detailed-lesson-content');
+            if (detailedContent) {
+                detailedContent.style.display = 'none';
             }
-        });
+        } else {
+            // For other methods, show the appropriate detailed section
+            const detailedSections = lessonContent.querySelectorAll('.detailed-lesson-content > div');
+            detailedSections.forEach((section, index) => {
+                if (section) {
+                    section.style.display = index === lessonNumber ? 'block' : 'none';
+                }
+            });
+        }
 
         // Update active button in lesson list
         const lessonButtons = lessonContent.querySelectorAll('.lesson-list button');
@@ -188,16 +196,27 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Update video if URL is provided
             if (videoUrl) {
-                const videoFrame = document.getElementById('lesson-video');
+                const videoFrame = document.querySelector(`#${method}-content .video-section iframe`);
                 if (videoFrame) {
                     videoFrame.src = videoUrl;
                 }
             }
 
             // Show the selected lesson content
-            document.querySelectorAll('.lesson-section-detail').forEach(section => {
-                section.style.display = section.id === targetId ? 'block' : 'none';
-            });
+            const lessonContent = button.closest('.lesson-content-detail');
+            const detailedContent = lessonContent.querySelector('.detailed-lesson-content');
+            
+            if (detailedContent) {
+                // For Gauss Elimination and Gauss-Jordan, show the detailed content
+                if (method === 'gauss-elimination' || method === 'gauss-jordan') {
+                    detailedContent.style.display = 'block';
+                }
+                
+                // Show the selected section and hide others
+                document.querySelectorAll('.lesson-section-detail').forEach(section => {
+                    section.style.display = section.id === targetId ? 'block' : 'none';
+                });
+            }
 
             // Update active button
             button.closest('.lesson-list').querySelectorAll('button').forEach(btn => {
