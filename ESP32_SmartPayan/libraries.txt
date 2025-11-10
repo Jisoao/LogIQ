@@ -1,0 +1,51 @@
+# Required Arduino Libraries for SmartPayan
+
+## Installation Instructions
+Open Arduino IDE → Tools → Manage Libraries
+Search for each library name and click "Install"
+
+## Required Libraries List
+
+1. DHT sensor library
+   - Author: Adafruit
+   - Version: 1.4.4 or later
+   - Purpose: DHT22 temperature and humidity sensor
+
+2. Adafruit Unified Sensor
+   - Author: Adafruit
+   - Version: 1.1.9 or later
+   - Purpose: Required dependency for DHT library
+
+3. BH1750
+   - Author: Christopher Laws
+   - Version: 1.3.0 or later
+   - Purpose: BH1750 light intensity sensor
+
+4. Firebase Arduino Client Library for ESP8266 and ESP32
+   - Author: Mobizt
+   - Version: 4.3.0 or later
+   - Purpose: Firebase Realtime Database integration
+
+## Built-in Libraries (No installation needed)
+- WiFi.h (ESP32 core)
+- Wire.h (ESP32 core)
+
+## Manual Installation (if automatic fails)
+
+### DHT Sensor Library
+URL: https://github.com/adafruit/DHT-sensor-library
+Download ZIP → Sketch → Include Library → Add .ZIP Library
+
+### BH1750 Library
+URL: https://github.com/claws/BH1750
+Download ZIP → Sketch → Include Library → Add .ZIP Library
+
+### Firebase ESP32 Library
+URL: https://github.com/mobizt/Firebase-ESP32
+Download ZIP → Sketch → Include Library → Add .ZIP Library
+
+## Verification
+After installation, verify by:
+1. Sketch → Include Library → Check if all libraries appear
+2. Try compiling the SmartPayan_ESP32.ino sketch
+3. No compilation errors = successful installation
