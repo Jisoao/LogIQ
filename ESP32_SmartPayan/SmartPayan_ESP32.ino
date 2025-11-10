@@ -14,12 +14,12 @@
  * Features:
  * - Real-time weather monitoring
  * - Automatic clothesline control
- * - Firebase integration for mobile app
+ * - WebSocket integration for mobile app
  * - Manual override capability
  */
 
 #include <WiFi.h>
-#include <FirebaseESP32.h>
+// #include <FirebaseESP32.h>  // FIREBASE REMOVED - Use WebSocket instead
 #include <DHT.h>
 #include <Wire.h>
 #include <BH1750.h>
@@ -48,20 +48,20 @@ const char* WIFI_PASSWORD = "YOUR_WIFI_PASSWORD"; // Replace with your WiFi pass
 
 WiFiHelper wifiHelper;
 
-// ==================== FIREBASE CONFIGURATION ====================
-#define FIREBASE_HOST "your-project.firebaseio.com"  // Replace with your Firebase project URL
-#define FIREBASE_AUTH "your-firebase-secret-key"      // Replace with your Firebase secret or token
-
-FirebaseData firebaseData;
-FirebaseConfig firebaseConfig;
-FirebaseAuth firebaseAuth;
+// ==================== FIREBASE CONFIGURATION (REMOVED) ====================
+// #define FIREBASE_HOST "your-project.firebaseio.com"  // FIREBASE REMOVED
+// #define FIREBASE_AUTH "your-firebase-secret-key"      // FIREBASE REMOVED
+// 
+// FirebaseData firebaseData;    // FIREBASE REMOVED
+// FirebaseConfig firebaseConfig; // FIREBASE REMOVED
+// FirebaseAuth firebaseAuth;     // FIREBASE REMOVED
 
 // ==================== SYSTEM CONSTANTS ====================
 #define MOTOR_SPEED 200        // Motor speed (0-255)
 #define RAIN_THRESHOLD 500     // Analog threshold for rain detection (adjust based on sensor)
 #define LIGHT_THRESHOLD 100    // Light threshold in lux (below = night, above = day)
 #define SENSOR_READ_INTERVAL 5000  // Read sensors every 5 seconds
-#define FIREBASE_UPDATE_INTERVAL 10000  // Update Firebase every 10 seconds
+#define DATA_UPDATE_INTERVAL 10000  // Update data every 10 seconds
 
 // ==================== SYSTEM STATES ====================
 enum ClotheslineState {
@@ -74,7 +74,7 @@ enum ClotheslineState {
 ClotheslineState currentState = RETRACTED;
 bool manualOverride = false;
 unsigned long lastSensorRead = 0;
-unsigned long lastFirebaseUpdate = 0;
+unsigned long lastDataUpdate = 0;
 
 // Sensor readings
 float temperature = 0.0;
@@ -89,19 +89,19 @@ void setup() {
   Serial.println("\n\n=== SmartPayan System Starting ===");
   
   // Initialize pins
-  initializePins();
+  InitializePins();
   
   // Initialize sensors
-  initializeSensors();
+  InitializeSensors();
   
   // Connect to WiFi
-  connectToWiFi();
+  ConnectToWiFi();
   
-  // Initialize Firebase
-  initializeFirebase();
+  // Initialize Firebase (REMOVED)
+  // InitializeFirebase();  // FIREBASE REMOVED - Use WebSocket instead
   
   // Initial motor state (retracted for safety)
-  stopMotor();
+  StopMotor();
   
   Serial.println("=== System Ready ===\n");
 }
@@ -113,30 +113,32 @@ void loop() {
   // Read sensors at regular intervals
   if (currentMillis - lastSensorRead >= SENSOR_READ_INTERVAL) {
     lastSensorRead = currentMillis;
-    readAllSensors();
-    printSensorReadings();
+    ReadAllSensors();
+    PrintSensorReadings();
     
     // Make decision based on sensor data (if not in manual override)
     if (!manualOverride) {
-      makeAutomaticDecision();
+      MakeAutomaticDecision();
     }
   }
   
-  // Update Firebase at regular intervals
-  if (currentMillis - lastFirebaseUpdate >= FIREBASE_UPDATE_INTERVAL) {
-    lastFirebaseUpdate = currentMillis;
-    updateFirebase();
+  // Update data at regular intervals (FIREBASE REMOVED)
+  if (currentMillis - lastDataUpdate >= DATA_UPDATE_INTERVAL) {
+    lastDataUpdate = currentMillis;
+    // UpdateFirebase();  // FIREBASE REMOVED - Use WebSocket instead
+    UpdateData();
   }
   
-  // Check for manual commands from Firebase
-  checkFirebaseCommands();
+  // Check for manual commands (FIREBASE REMOVED)
+  // CheckFirebaseCommands();  // FIREBASE REMOVED - Use WebSocket instead
+  CheckManualCommands();
   
   delay(100);  // Small delay to prevent watchdog issues
 }
 
 // ==================== INITIALIZATION FUNCTIONS ====================
 
-void initializePins() {
+void InitializePins() {
   Serial.println("Initializing pins...");
   
   // Motor control pins
@@ -151,7 +153,7 @@ void initializePins() {
   Serial.println("✓ Pins initialized");
 }
 
-void initializeSensors() {
+void InitializeSensors() {
   Serial.println("Initializing sensors...");
   
   // Initialize DHT22
@@ -171,7 +173,7 @@ void initializeSensors() {
   Serial.println("✓ All sensors initialized");
 }
 
-void connectToWiFi() {
+void ConnectToWiFi() {
   Serial.println("Connecting to WiFi...");
   Serial.print("SSID: ");
   Serial.println(WIFI_SSID);
@@ -188,7 +190,9 @@ void connectToWiFi() {
   }
 }
 
-void initializeFirebase() {
+// ==================== FIREBASE FUNCTIONS (REMOVED) ====================
+/*
+void InitializeFirebase() {
   Serial.println("Initializing Firebase...");
   
   // Configure Firebase
@@ -209,10 +213,11 @@ void initializeFirebase() {
   Firebase.setString(firebaseData, "/smartpayan/status", "online");
   Firebase.setString(firebaseData, "/smartpayan/state", "retracted");
 }
+*/
 
 // ==================== SENSOR READING FUNCTIONS ====================
 
-void readAllSensors() {
+void ReadAllSensors() {
   // Read DHT22 (Temperature & Humidity)
   temperature = dht.readTemperature();
   humidity = dht.readHumidity();
@@ -241,7 +246,7 @@ void readAllSensors() {
   }
 }
 
-void printSensorReadings() {
+void PrintSensorReadings() {
   Serial.println("\n--- Sensor Readings ---");
   Serial.print("Temperature: ");
   Serial.print(temperature);
@@ -261,13 +266,13 @@ void printSensorReadings() {
   Serial.println(rainDetected ? "YES" : "NO");
   
   Serial.print("Current State: ");
-  Serial.println(getStateString(currentState));
+  Serial.println(GetStateString(currentState));
   Serial.println("----------------------\n");
 }
 
 // ==================== DECISION LOGIC ====================
 
-void makeAutomaticDecision() {
+void MakeAutomaticDecision() {
   /*
    * Decision Logic:
    * 1. If rain is detected → RETRACT immediately
@@ -302,15 +307,15 @@ void makeAutomaticDecision() {
   
   // Execute decision
   if (shouldRetract && currentState != RETRACTED) {
-    retractClothesline();
+    RetractClothesline();
   } else if (shouldExtend && currentState != EXTENDED) {
-    extendClothesline();
+    ExtendClothesline();
   }
 }
 
 // ==================== MOTOR CONTROL FUNCTIONS ====================
 
-void extendClothesline() {
+void ExtendClothesline() {
   Serial.println(">>> Extending clothesline...");
   currentState = MOVING;
   
@@ -322,16 +327,16 @@ void extendClothesline() {
   // Run motor for a specific duration (adjust based on your setup)
   delay(3000);  // 3 seconds to fully extend
   
-  stopMotor();
+  StopMotor();
   currentState = EXTENDED;
   Serial.println("✓ Clothesline extended");
   
-  // Update Firebase
-  Firebase.setString(firebaseData, "/smartpayan/state", "extended");
-  Firebase.setString(firebaseData, "/smartpayan/lastAction", "Extended clothesline");
+  // Update Firebase (REMOVED)
+  // Firebase.setString(firebaseData, "/smartpayan/state", "extended");
+  // Firebase.setString(firebaseData, "/smartpayan/lastAction", "Extended clothesline");
 }
 
-void retractClothesline() {
+void RetractClothesline() {
   Serial.println("<<< Retracting clothesline...");
   currentState = MOVING;
   
@@ -343,27 +348,52 @@ void retractClothesline() {
   // Run motor for a specific duration (adjust based on your setup)
   delay(3000);  // 3 seconds to fully retract
   
-  stopMotor();
+  StopMotor();
   currentState = RETRACTED;
   Serial.println("✓ Clothesline retracted");
   
-  // Update Firebase
-  Firebase.setString(firebaseData, "/smartpayan/state", "retracted");
-  Firebase.setString(firebaseData, "/smartpayan/lastAction", "Retracted clothesline");
+  // Update Firebase (REMOVED)
+  // Firebase.setString(firebaseData, "/smartpayan/state", "retracted");
+  // Firebase.setString(firebaseData, "/smartpayan/lastAction", "Retracted clothesline");
   
-  // Send notification trigger
-  Firebase.setBool(firebaseData, "/smartpayan/notifications/rainAlert", true);
+  // Send notification trigger (REMOVED)
+  // Firebase.setBool(firebaseData, "/smartpayan/notifications/rainAlert", true);
 }
 
-void stopMotor() {
+void StopMotor() {
   digitalWrite(MOTOR_IN1, LOW);
   digitalWrite(MOTOR_IN2, LOW);
   analogWrite(MOTOR_ENA, 0);
 }
 
-// ==================== FIREBASE FUNCTIONS ====================
+// ==================== DATA UPDATE FUNCTIONS ====================
 
-void updateFirebase() {
+void UpdateData() {
+  if (!wifiHelper.isConnected()) {
+    Serial.println("✗ WiFi disconnected. Reconnecting...");
+    wifiHelper.connectWiFi();
+    return;
+  }
+  
+  Serial.println("Updating data...");
+  
+  // TODO: Implement WebSocket or HTTP data transmission
+  // This will replace Firebase functionality
+  
+  Serial.println("✓ Data updated");
+}
+
+void CheckManualCommands() {
+  // TODO: Implement WebSocket or HTTP command reception
+  // This will replace Firebase command checking
+  
+  // Placeholder for future implementation
+}
+
+/*
+// ==================== FIREBASE FUNCTIONS (REMOVED) ====================
+
+void UpdateFirebase() {
   if (!wifiHelper.isConnected()) {
     Serial.println("✗ WiFi disconnected. Reconnecting...");
     wifiHelper.connectWiFi();
@@ -380,7 +410,7 @@ void updateFirebase() {
   Firebase.setBool(firebaseData, "/smartpayan/sensors/rainDetected", rainDetected);
   
   // Update system state
-  Firebase.setString(firebaseData, "/smartpayan/state", getStateString(currentState));
+  Firebase.setString(firebaseData, "/smartpayan/state", GetStateString(currentState));
   Firebase.setBool(firebaseData, "/smartpayan/manualOverride", manualOverride);
   
   // Update timestamp
@@ -389,7 +419,7 @@ void updateFirebase() {
   Serial.println("✓ Firebase updated");
 }
 
-void checkFirebaseCommands() {
+void CheckFirebaseCommands() {
   // Check for manual control commands from mobile app
   if (Firebase.getString(firebaseData, "/smartpayan/commands/action")) {
     String command = firebaseData.stringData();
@@ -397,13 +427,13 @@ void checkFirebaseCommands() {
     if (command == "extend") {
       Serial.println("📱 Manual command: EXTEND");
       manualOverride = true;
-      extendClothesline();
+      ExtendClothesline();
       Firebase.setString(firebaseData, "/smartpayan/commands/action", "");
     } 
     else if (command == "retract") {
       Serial.println("📱 Manual command: RETRACT");
       manualOverride = true;
-      retractClothesline();
+      RetractClothesline();
       Firebase.setString(firebaseData, "/smartpayan/commands/action", "");
     }
     else if (command == "auto") {
@@ -413,10 +443,11 @@ void checkFirebaseCommands() {
     }
   }
 }
+*/
 
 // ==================== HELPER FUNCTIONS ====================
 
-String getStateString(ClotheslineState state) {
+String GetStateString(ClotheslineState state) {
   switch (state) {
     case EXTENDED:
       return "extended";
